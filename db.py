@@ -11,18 +11,22 @@ class Database:
                 uv          TINYINT,
                 hum         TINYINT,
                 temp        FLOAT,
-                timestamp   TIMESTAMP DEFAULT CURRENT_TIME
+                timestamp   TIMESTAMP DEFAULT CURRENT_TIME,
+                UNIQUE(place, timestamp)
             )
         ''')
 
     def _execute_(self, sql, params=None):
         conn = sqlite3.connect(self.path)
         c = conn.cursor()
-        c.execute(sql, params) if params else c.execute(sql)
+        try:
+            c.execute(sql, params) if params else c.execute(sql)
+        except:
+            pass
         conn.commit()
 
-    def insert(self, place, uv, hum, temp):
+    def insert(self, place, uv, hum, temp, time):
         self._execute_('''
-            INSERT INTO Data (place, uv, hum, temp)
-            VALUES (?,?,?,?)
-        ''', (place, uv, hum, temp))
+            INSERT INTO Data (place, uv, hum, temp, timestamp)
+            VALUES (?,?,?,?,?)
+        ''', (place, uv, hum, temp, time))
