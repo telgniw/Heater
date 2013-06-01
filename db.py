@@ -19,3 +19,9 @@ class Database:
         c = conn.cursor()
         c.execute(sql, params) if params else c.execute(sql)
         conn.commit()
+
+    def insert(self, uv, hum, temp):
+        self._execute_('''
+            INSERT INTO Data (uv, hum, temp)
+            VALUES (?,?,?)
+        ''', (uv, hum, temp))
