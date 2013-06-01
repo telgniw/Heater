@@ -1,7 +1,7 @@
 Weather Heater
 ==============
 
-Fetch weather information (temperature and humidity) from [cwb.gov.tw] for dinner heater.
+Fetch weather information (uv, temperature, and humidity) from [cwb.gov.tw] for dinner heater.
 
 [cwb.gov.tw]: http://www.cwb.gov.tw/
 
