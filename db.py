@@ -7,6 +7,7 @@ class Database:
         self._execute_('''
             CREATE TABLE IF NOT EXISTS Data (
                 id          INTEGER PRIMARY KEY,
+                place       TEXT,
                 uv          TINYINT,
                 hum         TINYINT,
                 temp        FLOAT,
@@ -20,8 +21,8 @@ class Database:
         c.execute(sql, params) if params else c.execute(sql)
         conn.commit()
 
-    def insert(self, uv, hum, temp):
+    def insert(self, place, uv, hum, temp):
         self._execute_('''
-            INSERT INTO Data (uv, hum, temp)
-            VALUES (?,?,?)
-        ''', (uv, hum, temp))
+            INSERT INTO Data (place, uv, hum, temp)
+            VALUES (?,?,?,?)
+        ''', (place, uv, hum, temp))
