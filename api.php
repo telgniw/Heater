@@ -32,7 +32,7 @@ if(array_key_exists($COL_PLACE, $_GET)) {
 }
 else {
     $places = [];
-    $result = $db->query('SELECT DISTINCT * FROM Data');
+    $result = $db->query('SELECT DISTINCT place FROM Data');
     while($row = $result->fetchArray()) {
         $places[] = $row[$COL_PLACE];
     }
