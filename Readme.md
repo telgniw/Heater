@@ -8,7 +8,7 @@ Fetch weather information (uv, temperature, and humidity) from [cwb.gov.tw] for 
 
 [cwb.gov.tw]: http://www.cwb.gov.tw/
 
-A simple visualization of the fetched data using [D3].
+See `index.html` for a simple visualization of the fetched data using [D3].
 
 [![Snapshot](http://github.com/telgniw/Heater/raw/master/images/video-snapshot.png)](http://vimeo.com/67564720?autoplay=1)
 
