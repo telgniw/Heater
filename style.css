@@ -1,0 +1,48 @@
+body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: medium;
+}
+nav {
+    float: left;
+    background-color: rgba(242, 233, 225, 0.75);
+    margin: 20px;
+    width: 12%;
+    height: 90%;
+    border-radius: 10px;
+    overflow-y: scroll;
+}
+nav > ul {
+    list-style: none;
+    padding: 0;
+    color: #666;
+}
+nav > ul > li {
+    display: block;
+    padding: 4px 20px;
+}
+nav > ul > li:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.75);
+    color: #000;
+}
+div#container {
+    float: left;
+    margin: 20px;
+}
+.axis path, .axis line {
+    fill: none;
+    stroke: #666;
+}
+path.line {
+    fill: none;
+    stroke-width: 1.5px;
+}
+.axis.y path { display: none; }
+path.line.uv { stroke: rgb(252, 112, 121); }
+.axis.y.uv text { fill: rgb(252, 112, 121); }
+path.line.hum { stroke: rgb(123, 184, 254); }
+.axis.y.hum text { fill: rgb(123, 184, 254); }
+path.line.temp { stroke: rgb(203, 232, 107); }
+.axis.y.temp text { fill: rgb(203, 232, 107); }
