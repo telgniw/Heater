@@ -3,18 +3,34 @@ header('Cache-Control: no-cache, must-revalidate');
 header('Expires: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
 header('Content-type: application/json; charset=utf-8');
 
+$TABLE_NAME = 'Data';
 $COL_PLACE  = 'place';
 $COL_UV     = 'uv';
 $COL_HUM    = 'hum';
 $COL_TEMP   = 'temp';
 $COL_TIME   = 'timestamp';
+$COL_TIMEH  = 'time_by_hour';
 
 $db = new SQLite3('weather.sqlite3');
 
 if(array_key_exists($COL_PLACE, $_GET)) {
     $place = $_GET[$COL_PLACE];
 
-    $stmt = $db->prepare('SELECT * FROM Data WHERE place = :place ORDER BY timestamp ASC');
+    $hour_format = '%Y-%m-%dT%H:00:00.000';
+    $stmt = $db->prepare("
+        SELECT $COL_PLACE, MAX($COL_UV) AS $COL_UV, MAX($COL_HUM) AS $COL_HUM,
+            MAX($COL_TEMP) AS $COL_TEMP, strftime('$hour_format', $COL_TIME) AS $COL_TIMEH
+        FROM $TABLE_NAME
+        JOIN (
+            SELECT d.$COL_PLACE AS p, strftime('$hour_format', d.$COL_TIME) AS t
+            FROM $TABLE_NAME d
+            WHERE $COL_PLACE = :place
+            GROUP BY p, t
+        ) di
+        ON $COL_PLACE = di.p AND $COL_TIMEH = di.t
+        WHERE $COL_PLACE = :place
+        GROUP BY $COL_PLACE, $COL_TIMEH;
+    ");
     $stmt->bindValue(':place', $place);
 
     $logs = [];
@@ -24,7 +40,7 @@ if(array_key_exists($COL_PLACE, $_GET)) {
             $COL_UV     => $row[$COL_UV],
             $COL_HUM    => $row[$COL_HUM],
             $COL_TEMP   => $row[$COL_TEMP],
-            $COL_TIME   => $row[$COL_TIME],
+            $COL_TIME   => $row[$COL_TIMEH],
         ];
     }
 
@@ -32,7 +48,7 @@ if(array_key_exists($COL_PLACE, $_GET)) {
 }
 else {
     $places = [];
-    $result = $db->query('SELECT DISTINCT place FROM Data');
+    $result = $db->query("SELECT DISTINCT $COL_PLACE FROM $TABLE_NAME;");
     while($row = $result->fetchArray()) {
         $places[] = $row[$COL_PLACE];
     }
