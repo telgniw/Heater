@@ -15,6 +15,15 @@
         (function() {
             var width = 960, height = 320;
             var margin = { top: 40, right: 40, bottom: 20, left: 120 };
+
+            // Settings for data lines.
+            var yRanges = [[height, 0], [0, height], [height, 0]];
+            var yAxisOrients = ['right', 'left', 'left'];
+            var yAxisOffsets = [width, 0, -30];
+            var fields = ['uv', 'hum', 'temp'];
+            var units = ['紫外線', '濕度%', '溫度℃'];
+
+            // Initialize svg graph.
             var svg = d3.select('div#container')
                 .append('svg')
                 .attr('width', margin.left + width + margin.right)
@@ -22,9 +31,9 @@
                 .append('g')
                 .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
 
+            // Initialize x/y axes.
             var x = d3.time.scale()
                 .range([0, width]);
-            var yRanges = [[height, 0], [0, height], [height, 0]];
             var y = yRanges.map(function(range) {
                 return d3.scale.linear()
                     .range(range);
@@ -33,23 +42,17 @@
             var xAxis = d3.svg.axis()
                 .scale(x)
                 .orient('bottom');
-            var yAxisOrients = ['right', 'left', 'left'];
-            var yAxisOffsets = [width, 0, -30];
             var yAxis = yAxisOrients.map(function(orient, i) {
                 return d3.svg.axis()
                     .scale(y[i])
                     .orient(orient);
             });
 
-            var fields = ['uv', 'hum', 'temp'];
-            var units = ['紫外線', '濕度%', '溫度℃'];
             var line = fields.map(function(field, i) {
                 return d3.svg.line()
                     .x(function(d) { return x(d.time); })
                     .y(function(d) { return y[i](d[field]); });
             });
-
-            var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%S.%L").parse;
 
             svg.append('g')
                 .attr('class', 'axis x')
@@ -66,20 +69,27 @@
                     .attr('class', 'line ' + field);
             });
 
+            var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%S.%L").parse;
+
             var draw = function(place) {
                 d3.json('api.php?place=' + place, function(data) {
                     // Set title.
                     d3.select('h1').text(place);
 
+                    // Set invalid data as zero and remove empty data.
                     data = data
                         .map(function(d) {
                             d.time = parseDate(d.time_by_hour);
+                            d.uv = d.uv? d.uv : 0;
+                            d.hum = d.hum? d.hum : 0;
+                            d.temp = d.temp? d.temp : 0;
                             return d;
                         })
                         .filter(function(d) {
-                            return d.uv && d.hum && d.temp;
+                            return d.uv || d.hum || d.temp;
                         });
 
+                    // Update x/y data.
                     x.domain(d3.extent(data, function(d) { return d.time; }));
                     svg.select('g.axis.x')
                         .transition()
