@@ -40,7 +40,7 @@ if(array_key_exists($COL_PLACE, $_GET)) {
             $COL_UV     => $row[$COL_UV],
             $COL_HUM    => $row[$COL_HUM],
             $COL_TEMP   => $row[$COL_TEMP],
-            $COL_TIME   => $row[$COL_TIMEH],
+            $COL_TIMEH   => $row[$COL_TIMEH],
         ];
     }
 
