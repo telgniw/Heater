@@ -11,7 +11,7 @@ $COL_TEMP   = 'temp';
 $COL_TIME   = 'timestamp';
 $COL_TIMEH  = 'time_by_hour';
 
-$db = new SQLite3('weather.sqlite3');
+$db = new SQLite3('data/weather.sqlite3');
 
 if(array_key_exists($COL_PLACE, $_GET)) {
     $place = $_GET[$COL_PLACE];
