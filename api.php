@@ -16,7 +16,7 @@ $db = new SQLite3('data/weather.sqlite3');
 if(array_key_exists($COL_PLACE, $_GET)) {
     $place = $_GET[$COL_PLACE];
 
-    $hour_format = '%Y-%m-%dT%H:00:00.000';
+    $hour_format = '%Y-%m-%d %H';
     $stmt = $db->prepare("
         SELECT $COL_PLACE, MAX($COL_UV) AS $COL_UV, MAX($COL_HUM) AS $COL_HUM,
             MAX($COL_TEMP) AS $COL_TEMP, strftime('$hour_format', $COL_TIME) AS $COL_TIMEH

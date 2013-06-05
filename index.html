@@ -69,7 +69,7 @@
                     .attr('class', 'line ' + field);
             });
 
-            var parseDate = d3.time.format("%Y-%m-%dT%H:%M:%S.%L").parse;
+            var parseDate = d3.time.format("%Y-%m-%d %H").parse;
 
             var draw = function(place) {
                 d3.json('api.php?place=' + place, function(data) {
