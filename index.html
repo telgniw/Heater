@@ -76,7 +76,7 @@
                     // Set title.
                     d3.select('h1').text(place);
 
-                    // Set invalid data as zero and remove empty data.
+                    // Set invalid data as zero.
                     data = data
                         .map(function(d) {
                             d.time = parseDate(d.time_by_hour);
@@ -84,9 +84,14 @@
                             d.hum = d.hum? d.hum : 0;
                             d.temp = d.temp? d.temp : 0;
                             return d;
-                        })
+                        });
+
+                    // Remove empty data.
+                    var maxHum = d3.max(data.map(function(d) { return d.hum; }));
+                    var maxTemp = d3.max(data.map(function(d) { return d.temp; }));
+                    data = data
                         .filter(function(d) {
-                            return d.uv || d.hum || d.temp;
+                            return (maxHum? d.hum : 1) && (maxTemp? d.temp : 1);
                         });
 
                     // Update x/y data.
