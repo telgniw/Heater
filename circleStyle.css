@@ -1,0 +1,34 @@
+body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: medium;
+}
+div#container svg {
+    display: block;
+    margin: 0 auto;
+}
+.axis path, .axis line {
+    fill: none;
+    stroke: #666;
+}
+path.line, circle.line {
+    fill: none;
+    stroke-width: 1.5px;
+}
+.axis.y path { display: none; }
+path.line.uv { stroke: rgb(252, 112, 121); }
+.axis.y.uv text { fill: rgb(252, 112, 121); }
+path.line.hum { stroke: rgb(123, 184, 254); }
+.axis.y.hum text { fill: rgb(123, 184, 254); }
+path.line.temp { stroke: rgb(203, 232, 107); }
+.axis.y.temp text { fill: rgb(203, 232, 107); }
+
+path.line.date-line {
+    stroke: rgb(244, 244, 244);
+    stroke-width: 1.0px;
+}
+circle.line.outer, circle.line.inner {
+    stroke: rgb(201, 201, 201);
+    stroke-width: 1.0px;
+}
