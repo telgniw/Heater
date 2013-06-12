@@ -42,17 +42,18 @@ if(array_key_exists($COL_PLACE, $_GET)) {
             var line = fields.map(function(field, i) {
                 return d3.svg.line()
                     .x(function(d) {
-                        return centerX + (y[i](d[field]) + innerCircleRadius) *
+                        return (y[i](d[field]) + innerCircleRadius) *
                             Math.cos(((x(d.time) - x.range()[0]) / (x.range()[1] - x.range()[0]) - 0.25) * Math.PI * 2);
                     })
                     .y(function(d) {
-                        return centerY + (y[i](d[field]) + innerCircleRadius) *
+                        return (y[i](d[field]) + innerCircleRadius) *
                             Math.sin(((x(d.time) - x.range()[0]) / (x.range()[1] - x.range()[0]) - 0.25) * Math.PI * 2);
                     });
             });
 
+            var g = svg.append('g');
             fields.forEach(function(field, i) {
-                svg.append('path')
+                g.append('path')
                     .attr('class', 'line ' + field);
             });
 
@@ -62,11 +63,11 @@ if(array_key_exists($COL_PLACE, $_GET)) {
                 .y(function(d) { return d.y; })
                 .interpolate('linear');
 
-            svg.append('path')
+            g.append('path')
                 .attr('class', 'line date-line')
                 .attr('d', linearLine([
-                    { x: centerX, y: centerY - innerCircleRadius - scaledHeight },
-                    { x: centerX, y: centerY - innerCircleRadius }
+                    { x: 0, y: - innerCircleRadius - scaledHeight },
+                    { x: 0, y: - innerCircleRadius }
                 ]));
 
             // Generate inner line.
@@ -106,11 +107,31 @@ if(array_key_exists($COL_PLACE, $_GET)) {
 
                 fields.forEach(function(field, i) {
                     y[i].domain(d3.extent(data, function(d) { return d[field]; }));
-                    svg.select('path.line.' + field)
+                    g.select('path.line.' + field)
                         .datum(data)
                         .transition()
                         .duration(1000)
                         .attr('d', line[i]);
+                });
+
+
+                // Set timer for rotation.
+                var centerRadius = Math.sqrt(centerX * centerX + centerY * centerY);
+                var start = Date.now();
+
+                d3.timer(function() {
+                    var elapsed = Date.now() - start;
+                    var degree = Math.floor(0.02 * elapsed);
+                    var rotate = function(d) {
+                        var dx = centerX - centerRadius * Math.cos(degree + Math.PI * 0.25),
+                            dy = centerY - centerRadius * Math.sin(degree + Math.PI * 0.25);
+                        return 'rotate(' + degree + ')';
+                    };
+
+                    g
+                        .attr('transform', 'translate(' + centerX + ',' + centerY + ')')
+                        .selectAll('path')
+                        .attr('transform', rotate);
                 });
             });
         })();
