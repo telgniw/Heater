@@ -4,8 +4,23 @@ body {
     padding: 0;
     font-size: medium;
 }
+form {
+    position: absolute;
+    margin: 10px;
+}
+form input, form button {
+    border: 1px solid rgb(242, 233, 225);
+    border-radius: 5px;
+    padding: 5px;
+}
+form button { background-color: pink; }
+form input:hover, button:hover,
+form input:focus, form button:focus {
+    border-color: rgb(252, 112, 121);
+    outline: none;
+}
 div#container svg {
-    display: block;
+    display: inline-block;
     margin: 0 auto;
 }
 .axis path, .axis line {
