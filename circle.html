@@ -7,19 +7,19 @@
         <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
     </head>
     <body>
-        <form>
-            <input name="place" type="text" autocomplete="off">
-            <button type="submit">Add</button>
+        <div id="form">
+            <input id="place" type="text" autocomplete="off">
+            <button id="submit" type="submit">Add</button>
+            <input id="range" type="range" min="0" max="10" step="0.5" value="1.5">
             <button id="hide" type="button">Hide</button>
-        </form>
-        <div id="container">
         </div>
+        <div id="container"></div>
         <script type="text/javascript">
         (function() {
-            var width = 600, height = 600, scaledHeight = 200;
+            var width = 640, height = 640, scaledHeight = 200;
             var margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
-            var centerX = width / 2, centerY = height / 2, innerCircleRadius = 60;
+            var centerX = width / 2, centerY = height / 2, innerCircleRadius = 80;
             var yRanges = [[0, scaledHeight], [scaledHeight, 0], [0, scaledHeight]];
             var fields = ['uv', 'hum', 'temp'];
 
@@ -111,6 +111,9 @@
                             .attr('d', line[i]);
                     });
 
+                    var lineWidth = d3.select('input#range').property('value');
+                    svg.selectAll('.line')
+                        .style('stroke-width', lineWidth);
 
                     // Set timer for rotation.
                     var centerRadius = Math.sqrt(centerX * centerX + centerY * centerY);
@@ -133,17 +136,34 @@
                 });
             };
 
-            d3.select('form').on('submit', function() {
-                // Prevent submission of the form.
-                d3.event.preventDefault();
-
-                var place = d3.select('input').property('value');
+            // Form settings.
+            d3.select('button#submit').on('click', function() {
+                var place = d3.select('input#place').property('value');
                 newSvg(place);
             });
 
+            d3.select('input#range').on('change', function() {
+                var lineWidth = d3.select(this).property('value');
+                d3.selectAll('.line')
+                    .style('stroke-width', lineWidth);
+            });
+
             d3.select('button#hide').on('click', function() {
-                d3.select('form')
+                d3.select('div#form')
                     .style('display', 'none');
+            });
+
+            d3.select('body').on('keydown', function() {
+                var evt = d3.event;
+                // key 'h' pressed down
+                if(evt.keyCode == 72) {
+                    var form = d3.select('div#form');
+                    var display = form.style('display');
+                    if(display == 'none')
+                        form.style('display', 'inherit');
+                    else
+                        form.style('display', 'none');
+                }
             });
         })();
         </script>
