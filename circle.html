@@ -10,6 +10,7 @@
         <form>
             <input name="place" type="text" autocomplete="off">
             <button type="submit">Add</button>
+            <button id="hide" type="button">Hide</button>
         </form>
         <div id="container">
         </div>
@@ -138,6 +139,11 @@
 
                 var place = d3.select('input').property('value');
                 newSvg(place);
+            });
+
+            d3.select('button#hide').on('click', function() {
+                d3.select('form')
+                    .style('display', 'none');
             });
         })();
         </script>
