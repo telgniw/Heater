@@ -12,6 +12,8 @@ See `index.html` for a simple visualization of the fetched data using [D3].
 
 [![Snapshot](http://github.com/telgniw/Heater/raw/master/images/video-snapshot.png)](http://vimeo.com/67564720?autoplay=1)
 
+See `circle.html` for a more complicated, circular visualization with rotation animation.
+
 [![Circle Snapshot](http://github.com/telgniw/Heater/raw/master/images/video-snapshot-circle.png)](https://vimeo.com/68265739?autoplay=1)
 
 Library Used
