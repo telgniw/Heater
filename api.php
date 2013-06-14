@@ -3,6 +3,10 @@ header('Cache-Control: no-cache, must-revalidate');
 header('Expires: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
 header('Content-type: application/json; charset=utf-8');
 
+function zeroIfNull($value) {
+    return $value? $value : 0;
+}
+
 $TABLE_NAME = 'Data';
 $COL_PLACE  = 'place';
 $COL_UV     = 'uv';
@@ -37,9 +41,9 @@ if(array_key_exists($COL_PLACE, $_GET)) {
     $result = $stmt->execute();
     while($row = $result->fetchArray()) {
         $logs[] = [
-            $COL_UV     => $row[$COL_UV],
-            $COL_HUM    => $row[$COL_HUM],
-            $COL_TEMP   => $row[$COL_TEMP],
+            $COL_UV     => zeroIfNull($row[$COL_UV]),
+            $COL_HUM    => zeroIfNull($row[$COL_HUM]),
+            $COL_TEMP   => zeroIfNull($row[$COL_TEMP]),
             $COL_TIMEH   => $row[$COL_TIMEH],
         ];
     }

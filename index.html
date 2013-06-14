@@ -76,13 +76,10 @@
                     // Set title.
                     d3.select('h1').text(place);
 
-                    // Set invalid data as zero.
+                    // Parse date of data.
                     data = data
                         .map(function(d) {
                             d.time = parseDate(d.time_by_hour);
-                            d.uv = d.uv? d.uv : 0;
-                            d.hum = d.hum? d.hum : 0;
-                            d.temp = d.temp? d.temp : 0;
                             return d;
                         });
 
