@@ -6,12 +6,20 @@ body {
 }
 nav {
     float: left;
+    position: absolute;
+    top: 0px;
+    left: -190px;
     background-color: rgba(242, 233, 225, 0.75);
     margin: 20px;
-    width: 12%;
+    width: 200px;
     height: 90%;
     border-radius: 10px;
     overflow-y: scroll;
+    transition: left 0.5s;
+}
+nav:hover {
+    left: -60px;
+    transition: left 0.5s;
 }
 nav > ul {
     list-style: none;
@@ -20,7 +28,7 @@ nav > ul {
 }
 nav > ul > li {
     display: block;
-    padding: 4px 20px;
+    padding: 4px 60px;
 }
 nav > ul > li:hover {
     cursor: pointer;
@@ -28,8 +36,7 @@ nav > ul > li:hover {
     color: #000;
 }
 div#container {
-    float: left;
-    margin: 20px;
+    margin: 40px 40px;
 }
 .axis path, .axis line {
     fill: none;
