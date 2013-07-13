@@ -1,20 +1,12 @@
 Weather Heater
 ==============
 
-Fetch weather information (uv, temperature, and humidity) from [cwb.gov.tw] for dinner heater.
+Fetch weather information (uv) from [cwb.gov.tw] for heater.
 
     # Fetch current weather data into database.
-    python scripts/main.py data/weather.sqlite3
+    python scripts/main.py data/uv.sqlite3
 
 [cwb.gov.tw]: http://www.cwb.gov.tw/
-
-See `index.html` for a simple visualization of the fetched data using [D3].
-
-[![Snapshot](http://github.com/telgniw/Heater/raw/master/images/video-snapshot.png)](http://vimeo.com/67564720?autoplay=1)
-
-See `circle.html` for a more complicated, circular visualization with rotation animation.
-
-[![Circle Snapshot](http://github.com/telgniw/Heater/raw/master/images/video-snapshot-circle.png)](https://vimeo.com/68265739?autoplay=1)
 
 Library Used
 ------------
