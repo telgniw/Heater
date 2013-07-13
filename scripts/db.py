@@ -9,8 +9,6 @@ class Database:
                 id          INTEGER PRIMARY KEY,
                 place       TEXT,
                 uv          TINYINT,
-                hum         TINYINT,
-                temp        FLOAT,
                 timestamp   TIMESTAMP DEFAULT CURRENT_TIME,
                 UNIQUE(place, timestamp)
             )
@@ -25,8 +23,8 @@ class Database:
             pass
         conn.commit()
 
-    def insert(self, place, uv, hum, temp, time):
+    def insert(self, place, uv, time):
         self._execute_('''
-            INSERT INTO Data (place, uv, hum, temp, timestamp)
-            VALUES (?,?,?,?,?)
-        ''', (place, uv, hum, temp, time))
+            INSERT INTO Data (place, uv, timestamp)
+            VALUES (?,?,?)
+        ''', (place, uv, time))
