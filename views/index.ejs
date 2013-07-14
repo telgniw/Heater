@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Heater: <%= title %></title>
+        
+        <!-- Stylesheets -->
+        <% include layoutStyles %>
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+    </head>
+    <body>
+        <% include layoutNavbar %>
+
+        <div class="container">
+            <h1><%= title %></h1>
+        </div>
+
+        <!-- Scripts: placed at the end of the document so that the pages loads faster. -->
+        <% include layoutScripts %>
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>

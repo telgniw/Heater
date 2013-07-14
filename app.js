@@ -4,11 +4,17 @@ var fs = require('fs');
 // App initialization.
 var app = express();
 
+app.set('base_url', '/heater');
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
+app.use(app.get('base_url'), express.static(__dirname + '/public'));
+
 app.use(function(req, res, next) {
     res.charset = 'utf-8';
     next();
 });
-app.set('base_url', '/heater');
 
 // Import all routes.
 // Reference: http://stackoverflow.com/a/9030181/881930

@@ -1,5 +1,10 @@
 module.exports = function(app) {
-    app.get(app.get('base_url'), function(req, res) {
-        res.send('hello world');
+    var base_url = app.get('base_url');
+
+    // Index: home page.
+    app.get(base_url, function(req, res) {
+        res.render('index', {
+            title: 'UV Visualization',
+        });
     });
 };
