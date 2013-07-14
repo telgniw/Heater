@@ -68,7 +68,7 @@ $(function() {
             $('nav .nav').last()
                 .after(
                     $('<form></form>')
-                        .addClass('navbar-form pull-left')
+                        .addClass('navbar-form')
                         .append($datePicker)
                 );
         }
@@ -84,7 +84,7 @@ $(function() {
     $('nav .nav').first()
         .after(
             $('<ul></ul>')
-                .addClass('nav pull-left')
+                .addClass('nav')
                 .append(
                     $('<li></li>')
                         .addClass('divider-vertical')
