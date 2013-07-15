@@ -65,6 +65,8 @@ $(function() {
                 'format': 'yyyy-mm-dd',
             });
 
+            $('input', $datePicker).change(updateVisualization);
+
             $('nav .nav').last()
                 .after(
                     $('<form></form>')
@@ -77,6 +79,18 @@ $(function() {
             .datepicker('update', datum.last_date)
             .datepicker('setStartDate', datum.first_date)
             .datepicker('setEndDate', datum.last_date);
+
+        updateVisualization();
+    };
+    var updateVisualization = function() {
+        var location = $.trim(
+            $('#menu-location').children('a').text()
+        );
+        var date = $('nav').find('.date').children('input').val();
+
+        $.getJSON('api/' + location + '/' + date, function(data) {
+            // TODO
+        });
     };
 
     var $menu = menu('Location ')
