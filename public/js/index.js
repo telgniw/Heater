@@ -13,7 +13,9 @@ $(function() {
             );
         }
 
-        return $('<li></li>').append($title);
+        return $('<li></li>')
+            .addClass('dropdown')
+            .append($title);
     };
     var menuBody = function() {
         return $('<ul></ul>').addClass('dropdown-menu');
