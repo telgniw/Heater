@@ -1,12 +1,12 @@
 var sqlite3 = require('sqlite3');
 
 var db = new sqlite3.Database('data/uv.sqlite3');
-var day_format = '%Y-%m-%d';
+var dayFormat = '%Y-%m-%d';
 
-var getLocations = function(callback) {
+var getAllInfo = function(callback) {
     var sql = 'SELECT place AS location, ' + 
-              '       MIN(strftime("' + day_format + '", timestamp)) AS first_date, ' +
-              '       MAX(strftime("' + day_format + '", timestamp)) AS last_date ' +
+              '       MIN(strftime("' + dayFormat + '", timestamp)) AS first_date, ' +
+              '       MAX(strftime("' + dayFormat + '", timestamp)) AS last_date ' +
               'FROM Data ' +
               'GROUP BY place ';
     db.serialize(function() {
@@ -18,22 +18,22 @@ var getLocations = function(callback) {
 
 var getLocationInfo = function(location, callback) {
     var sql = 'SELECT place AS location, ' + 
-              '       MIN(strftime("' + day_format + '", timestamp)) AS first_date, ' +
-              '       MAX(strftime("' + day_format + '", timestamp)) AS last_date ' +
+              '       MIN(strftime("' + dayFormat + '", timestamp)) AS first_date, ' +
+              '       MAX(strftime("' + dayFormat + '", timestamp)) AS last_date ' +
               'FROM Data ' +
               'WHERE place = $location ';
     db.serialize(function() {
-        db.all(sql, { $location: location }, function(err, rows) {
-            callback(rows);
+        db.get(sql, { $location: location }, function(err, row) {
+            callback(row);
         });
     });
 };
 
-var getUvInfo = function(location, date, callback) {
+var getUvList = function(location, date, callback) {
     var sql = 'SELECT uv, strftime("%H", timestamp) AS hour ' +
               'FROM Data ' +
               'WHERE place = $location AND ' +
-              '      strftime("' + day_format + '", timestamp) = $date '
+              '      strftime("' + dayFormat + '", timestamp) = $date '
               'ORDER BY timestamp ASC ';
     db.serialize(function() {
         db.all(sql, { $location: location, $date: date }, function(err, rows) {
@@ -42,6 +42,6 @@ var getUvInfo = function(location, date, callback) {
     });
 };
 
-module.exports.getLocations = getLocations;
+module.exports.getAllInfo = getAllInfo;
 module.exports.getLocationInfo = getLocationInfo;
-module.exports.getUvInfo = getUvInfo;
+module.exports.getUvList = getUvList;
