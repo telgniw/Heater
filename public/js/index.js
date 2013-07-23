@@ -83,7 +83,10 @@ $(function() {
         });
     };
 
-    $('.menu-item > a').click(onLocationSelected);
+    $('.menu-item > a')
+        .click(onLocationSelected)
+        .first()
+        .click();
 
     $('#nav-datepicker')
         .datepicker({

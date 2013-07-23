@@ -1,10 +1,10 @@
-#nav-datepicker {
-    display: none;
-}
 .navbar-form .input-append {
-    margin-bottom: 0;
+    margin-bottom: 0px;
 }
 
+svg {
+    margin: 20px 0px;
+}
 .axis path, .axis line {
     fill: none;
     stroke: #cccccc;
