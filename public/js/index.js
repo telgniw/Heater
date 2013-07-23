@@ -4,6 +4,7 @@ var drawLineChart = function(data, field) {
     var x = d3.time.scale()
         .range([0, width]);
     var y = d3.scale.linear()
+        .domain([0, 14])
         .range([height, 0]);
     var xAxis = d3.svg.axis()
         .scale(x)
@@ -39,7 +40,6 @@ var drawLineChart = function(data, field) {
         .duration(1000)
         .call(xAxis);
 
-    y.domain(d3.extent(data, function(d) { return d[field]; }));
     svg.select('g.y.axis')
         .transition()
         .duration(1000)
@@ -90,7 +90,6 @@ $(function() {
 
     $('#nav-datepicker')
         .datepicker({
-            autoclose: true,
             format: 'yyyy-mm-dd',
         })
         .on('changeDate', updateVisualization);
