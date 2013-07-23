@@ -4,3 +4,13 @@
 .navbar-form .input-append {
     margin-bottom: 0;
 }
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #cccccc;
+}
+path.line {
+    fill: none;
+    stroke: #ee88aa;
+    stroke-width: 3;
+}
