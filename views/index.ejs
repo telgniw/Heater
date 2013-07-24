@@ -6,19 +6,19 @@
         
         <!-- Stylesheets -->
         <% include layoutStyles %>
-        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="stylesheet" type="text/css" href="/heater/css/index.css">
     </head>
     <body>
         <% include layoutNavbar %>
 
-        <div class="rows-fluid container">
+        <div class="container">
             <ul class="nav nav-pills well well-small">
                 <% for(var i = 0; i < 15 && i < locations.length; i++) { %>
                     <li class="menu-item"><a href="#"><%= locations[i] %></a></li>
                 <% } %>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <span class="text">其他</span>
+                        其他
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
@@ -42,6 +42,6 @@
 
         <!-- Scripts: placed at the end of the document so that the pages loads faster. -->
         <% include layoutScripts %>
-        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="/heater/js/index.js"></script>
     </body>
 </html>
