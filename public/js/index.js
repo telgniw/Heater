@@ -93,6 +93,7 @@ $(function() {
     $datepicker
         .datepicker({
             format: 'yyyy-mm-dd',
+            todayHighlight: true,
         })
         .on('changeDate', updateVisualization);
 
