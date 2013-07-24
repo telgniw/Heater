@@ -1,3 +1,4 @@
+var fs = require('fs');
 var sqlite3 = require('sqlite3');
 
 var db = new sqlite3.Database('data/uv.sqlite3');
@@ -29,6 +30,33 @@ var getLocationInfo = function(location, callback) {
     });
 };
 
+var getSortedLocationList = function(callback) {
+    getAllInfo(function(rows) {
+        var mainLocations = JSON.parse(
+            fs.readFileSync('./data/mainLocations.json')
+        );
+
+        var locations = [];
+        for(var i in rows) {
+            locations.push(rows[i].location);
+        }
+
+        locations.sort(function(a, b) {
+            var idxA = mainLocations.indexOf(a);
+            var idxB = mainLocations.indexOf(b);
+
+            if(idxA < 0 && idxB < 0)
+                return a <= b? -1 : 1;
+
+            idxA = idxA < 0? mainLocations.length : idxA;
+            idxB = idxB < 0? mainLocations.length : idxB;
+            return idxA - idxB;
+        });
+
+        callback(locations);
+    });
+};
+
 var getUvList = function(location, date, callback) {
     var sql = 'SELECT uv, strftime("%H", timestamp) AS hour ' +
               'FROM Data ' +
@@ -44,4 +72,5 @@ var getUvList = function(location, date, callback) {
 
 module.exports.getAllInfo = getAllInfo;
 module.exports.getLocationInfo = getLocationInfo;
+module.exports.getSortedLocationList = getSortedLocationList;
 module.exports.getUvList = getUvList;
