@@ -85,6 +85,8 @@ $(function() {
         });
     };
 
+    $('#navbar-home').addClass('active');
+
     $('.menu-item > a')
         .click(onLocationSelected)
         .first()
