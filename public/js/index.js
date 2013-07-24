@@ -54,14 +54,14 @@ var drawLineChart = function(parent, data, field) {
 };
 
 $(function() {
-    var $datepicker = $('#nav-datepicker');
-    var $location = $('#nav-location-menu > a > .text');
+    var $place = $('.location');
+    var $datepicker = $('#date-picker');
 
     var updateVisualization = function() {
-        var location = $location.text();
+        var place = $place.text();
         var date = $('input', $datepicker).val();
 
-        $.getJSON('api/' + location + '/' + date, function(data) {
+        $.getJSON('api/' + place + '/' + date, function(data) {
             var parseDate = d3.time.format('%Y-%m-%d %H').parse;
             data.map(function(d) {
                 d.time = parseDate(date + ' ' + d.hour);
@@ -72,10 +72,10 @@ $(function() {
         });
     };
     var onLocationSelected = function() {
-        var location = $(this).text();
-        $location.text(location);
+        place = $(this).text();
+        $place.text(place);
 
-        $.getJSON('api/' + location, function(data) {
+        $.getJSON('api/' + place, function(data) {
             $datepicker.show()
                 .datepicker('update', data.last_date)
                 .datepicker('setStartDate', data.first_date)
