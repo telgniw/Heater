@@ -2,7 +2,7 @@
     margin-bottom: 0px;
 }
 
-svg {
+#chart svg {
     margin: 20px 0px;
 }
 .axis path, .axis line {

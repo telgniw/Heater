@@ -1,6 +1,7 @@
-var drawLineChart = function(data, field) {
-    var width = 800, height = 320;
+var drawLineChart = function(parent, data, field) {
     var margin = { top: 10, right: 30, bottom: 30, left: 30 };
+    var width = (parseInt(d3.select(parent).style('width')) - (margin.left + margin.right)) || 800,
+        height = 320;
     var x = d3.time.scale()
         .range([0, width]);
     var y = d3.scale.linear()
@@ -16,9 +17,9 @@ var drawLineChart = function(data, field) {
         .x(function(d) { return x(d.time); })
         .y(function(d) { return y(d[field]); });
 
-    var svg = d3.select('#container').select('svg');
+    var svg = d3.select(parent).select('svg');
     if(svg.empty()) {
-        svg = d3.select('#container').append('svg')
+        svg = d3.select(parent).append('svg')
             .attr('width', margin.left + width + margin.right)
             .attr('height', margin.top + height + margin.bottom)
             .append('g')
@@ -53,24 +54,12 @@ var drawLineChart = function(data, field) {
 };
 
 $(function() {
-    var onLocationSelected = function() {
-        var location = $(this).text();
+    var $datepicker = $('#nav-datepicker');
+    var $location = $('#nav-location-menu > a > .text');
 
-        $('#nav-location-menu').children('a').children('.text').text(location);
-
-        $.getJSON('api/' + location, function(data) {
-            var $datePicker = $('#nav-datepicker')
-                .show()
-                .datepicker('update', data.last_date)
-                .datepicker('setStartDate', data.first_date)
-                .datepicker('setEndDate', data.last_date);
-
-            updateVisualization();
-        });
-    };
     var updateVisualization = function() {
-        var location = $('#nav-location-menu').children('a').children('.text').text()
-        var date = $('#nav-datepicker').children('input').val();
+        var location = $location.text();
+        var date = $('input', $datepicker).val();
 
         $.getJSON('api/' + location + '/' + date, function(data) {
             var parseDate = d3.time.format('%Y-%m-%d %H').parse;
@@ -79,7 +68,20 @@ $(function() {
                 return d;
             });
 
-            drawLineChart(data, 'uv');
+            drawLineChart('#chart', data, 'uv');
+        });
+    };
+    var onLocationSelected = function() {
+        var location = $(this).text();
+        $location.text(location);
+
+        $.getJSON('api/' + location, function(data) {
+            $datepicker.show()
+                .datepicker('update', data.last_date)
+                .datepicker('setStartDate', data.first_date)
+                .datepicker('setEndDate', data.last_date);
+
+            updateVisualization();
         });
     };
 
@@ -88,9 +90,11 @@ $(function() {
         .first()
         .click();
 
-    $('#nav-datepicker')
+    $datepicker
         .datepicker({
             format: 'yyyy-mm-dd',
         })
         .on('changeDate', updateVisualization);
+
+    $(window).resize(updateVisualization);
 });
