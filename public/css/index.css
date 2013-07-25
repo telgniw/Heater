@@ -2,7 +2,7 @@ ul.nav-pills {
     margin: 20px 0px;
 }
 
-#chart svg {
+.chart svg {
     margin: 20px 0px;
 }
 .axis path, .axis line {
