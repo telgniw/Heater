@@ -11,16 +11,4 @@ module.exports = function(app) {
             });
         });
     });
-
-    // Visualizations
-    var visBaseUrl = baseUrl + '/vis';
-
-    // Visualization: line.
-    app.get(visBaseUrl + '/line', function(req, res) {
-        uvQuery.getSortedLocationList(function(locations) {
-            res.render('vis/line', {
-                locations: locations,
-            });
-        });
-    });
 };
