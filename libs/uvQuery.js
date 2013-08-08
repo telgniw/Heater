@@ -3,6 +3,7 @@ var sqlite3 = require('sqlite3');
 
 var db = new sqlite3.Database('data/uv.sqlite3');
 var dayFormat = '%Y-%m-%d';
+var weekFormat = '%Y-%W'; // %W: week of the year
 
 var getAllInfo = function(callback) {
     var sql = 'SELECT place AS location, ' + 
@@ -61,7 +62,20 @@ var getUvList = function(location, date, callback) {
     var sql = 'SELECT uv, strftime("%H", timestamp) AS hour ' +
               'FROM Data ' +
               'WHERE place = $location AND ' +
-              '      strftime("' + dayFormat + '", timestamp) = $date '
+              '      strftime("' + dayFormat + '", timestamp) = $date ' +
+              'ORDER BY timestamp ASC ';
+    db.serialize(function() {
+        db.all(sql, { $location: location, $date: date }, function(err, rows) {
+            callback(rows);
+        });
+    });
+};
+
+var getWeekUvList = function(location, date, callback) {
+    var sql = 'SELECT uv, strftime("' + dayFormat + ' %H", timestamp) AS timestamp ' +
+              'FROM Data ' +
+              'WHERE place = $location AND ' +
+              '      strftime("' + weekFormat + '", timestamp) = strftime("' + weekFormat + '", $date) ' +
               'ORDER BY timestamp ASC ';
     db.serialize(function() {
         db.all(sql, { $location: location, $date: date }, function(err, rows) {
@@ -74,3 +88,4 @@ module.exports.getAllInfo = getAllInfo;
 module.exports.getLocationInfo = getLocationInfo;
 module.exports.getSortedLocationList = getSortedLocationList;
 module.exports.getUvList = getUvList;
+module.exports.getWeekUvList = getWeekUvList;
