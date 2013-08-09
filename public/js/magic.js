@@ -62,7 +62,8 @@ $(function() {
         .text(place);
 
     var g = svg.append('g')
-        .attr('transform', 'translate(' + center.x + ',' + center.y + ')');
+        .attr('transform', 'translate(' + center.x + ',' + center.y + ')')
+        .append('g');
 
     var n = 7, wuxing = ['日', '月', '水', '火', '木', '金', '土'];
     var d = 2 * Math.PI / 7;
@@ -103,4 +104,13 @@ $(function() {
     new api(place).getForWeek(today, function(data) {
     });
     */
+
+    var start = Date.now();
+    d3.timer(function() {
+        var elapsed = Date.now() - start;
+        var degree = Math.floor(0.02 * elapsed);
+        g.attr('transform', function(d) {
+            return 'rotate(' + degree + ')';
+        });
+    });
 });
