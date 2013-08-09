@@ -3,7 +3,6 @@ var sqlite3 = require('sqlite3');
 
 var db = new sqlite3.Database('data/uv.sqlite3');
 var dayFormat = '%Y-%m-%d';
-var weekFormat = '%Y-%W'; // %W: week of the year
 
 var getAllInfo = function(callback) {
     var sql = 'SELECT place AS location, ' + 
@@ -75,7 +74,8 @@ var getWeekUvList = function(location, date, callback) {
     var sql = 'SELECT uv, strftime("' + dayFormat + ' %H", timestamp) AS timestamp ' +
               'FROM Data ' +
               'WHERE place = $location AND ' +
-              '      strftime("' + weekFormat + '", timestamp) = strftime("' + weekFormat + '", $date) ' +
+              '      julianday($date) - julianday(timestamp) > -1 AND ' +
+              '      julianday($date) - julianday(timestamp) <= 6 ' +
               'ORDER BY timestamp ASC ';
     db.serialize(function() {
         db.all(sql, { $location: location, $date: date }, function(err, rows) {
