@@ -23,4 +23,11 @@ module.exports = function(app) {
             res.json(rows);
         });
     });
+
+    // API: get uv list for each hour for location and week ends with date
+    app.get(apiUrl + '/7/:location/:date', function(req, res) {
+        uvQuery.getWeekUvList(req.params.location, req.params.date, function(rows) {
+            res.json(rows);
+        });
+    });
 };

@@ -61,8 +61,12 @@ $(function() {
         var place = $place.text();
         var date = $('input', $datepicker).val();
 
-        new api('#chart-day', place).start(date, 1);
-        new api('#chart-week', place).start(date, 7);
+        new api(place).getForDate(date, function(data) {
+            drawLineChart('#chart-day', data, 'uv');
+        });
+        new api(place).getForWeek(date, function(data) {
+            drawLineChart('#chart-week', data, 'uv');
+        });
     };
     var onLocationSelected = function() {
         place = $(this).text();
