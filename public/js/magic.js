@@ -21,46 +21,6 @@ $(function() {
         .append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     
-    svg.append('circle')
-        .attr('class', 'line star')
-        .attr('cx', center.x)
-        .attr('cy', center.y)
-        .attr('r', radius.star);
-    svg.append('circle')
-        .attr('class', 'line')
-        .attr('cx', center.x)
-        .attr('cy', center.y)
-        .attr('r', radius.innerUv);
-    svg.append('circle')
-        .attr('class', 'line')
-        .attr('cx', center.x)
-        .attr('cy', center.y)
-        .attr('r', radius.outerUv - radius.shift);
-    svg.append('circle')
-        .attr('class', 'line')
-        .attr('cx', center.x)
-        .attr('cy', center.y)
-        .attr('r', radius.outerUv);
-
-    var r = radius.place - radius.shift;
-    var dr = (radius.place * (Math.sqrt(2) - 1) + r) * Math.cos(0.25 * Math.PI);
-    svg.append('circle')
-        .attr('class', 'line place')
-        .attr('cx', radius.place)
-        .attr('cy', height - radius.place)
-        .attr('r', radius.place);
-    svg.append('circle')
-        .attr('class', 'line place')
-        .attr('cx', dr)
-        .attr('cy', height - dr)
-        .attr('r', r);
-    svg.append('text')
-        .attr('x', -18 * place.length)
-        .attr('y', 12)
-        .attr('class', 'label place')
-        .attr('transform', 'translate(' + dr + ',' + (height - dr) + ')')
-        .text(place);
-
     var g = svg.append('g')
         .attr('transform', 'translate(' + center.x + ',' + center.y + ')')
         .append('g');
@@ -163,6 +123,46 @@ $(function() {
             }
         }
     });
+
+    svg.append('circle')
+        .attr('class', 'line star')
+        .attr('cx', center.x)
+        .attr('cy', center.y)
+        .attr('r', radius.star);
+    svg.append('circle')
+        .attr('class', 'line')
+        .attr('cx', center.x)
+        .attr('cy', center.y)
+        .attr('r', radius.innerUv);
+    svg.append('circle')
+        .attr('class', 'line')
+        .attr('cx', center.x)
+        .attr('cy', center.y)
+        .attr('r', radius.outerUv - radius.shift);
+    svg.append('circle')
+        .attr('class', 'line')
+        .attr('cx', center.x)
+        .attr('cy', center.y)
+        .attr('r', radius.outerUv);
+
+    var r = radius.place - radius.shift;
+    var dr = (radius.place * (Math.sqrt(2) - 1) + r) * Math.cos(0.25 * Math.PI);
+    svg.append('circle')
+        .attr('class', 'line place')
+        .attr('cx', radius.place)
+        .attr('cy', height - radius.place)
+        .attr('r', radius.place);
+    svg.append('circle')
+        .attr('class', 'line place')
+        .attr('cx', dr)
+        .attr('cy', height - dr)
+        .attr('r', r);
+    svg.append('text')
+        .attr('x', -18 * place.length)
+        .attr('y', 12)
+        .attr('class', 'label place')
+        .attr('transform', 'translate(' + dr + ',' + (height - dr) + ')')
+        .text(place);
 
     var start = Date.now();
     d3.timer(function() {
