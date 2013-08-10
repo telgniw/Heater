@@ -131,7 +131,7 @@ $(function() {
         var st = point(radius.innerUv, d),
             ed = point(radius.innerUv + h * uvRatio, d);
         var dir = vector(st, ed), base = pVector(st, ed);
-        var w = (0.1 + uvRatio) * 5;
+        var w = (0.3 + uvRatio * uv);
         gUv.append('path')
             .attr('class', 'line uv')
             .attr('d', line([
@@ -150,9 +150,16 @@ $(function() {
         }
 
         for(var k in grouped) {
+            var sum = 0;
             for(var i in grouped[k]) {
                 var datum = grouped[k][i];
-                bar(k, i, grouped[k].length, datum.time, datum.uv);
+                sum += datum.uv + 1;
+            }
+            var current = 0;
+            for(var i in grouped[k]) {
+                var datum = grouped[k][i];
+                current += datum.uv + 1;
+                bar(k, current, sum, datum.time, datum.uv);
             }
         }
     });
