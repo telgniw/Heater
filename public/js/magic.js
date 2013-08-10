@@ -66,7 +66,7 @@ $(function() {
         .append('g');
 
     var n = 7, wuxing = ['日', '月', '水', '火', '木', '金', '土'];
-    var d = 2 * Math.PI / 7;
+    var d = 2 * Math.PI / n;
     var line = d3.svg.line()
         .x(function(d) { return d.x })
         .y(function(d) { return d.y })
@@ -100,15 +100,42 @@ $(function() {
             .text(wuxing[i]);
     }
     
-    /*
+    var gUv = g.append('g')
+        .attr('class', 'uv');
+    var bar = function(pi, pj, lj, time, uv) {
+        var p = 2 * Math.PI / n;
+        var d = p * (pi + pj/lj);
+        var h = radius.outerUv - radius.innerUv;
+        var uvRatio = uv / 15;
+        gUv.append('path')
+            .attr('class', 'line uv')
+            .attr('d', line([
+                point(radius.innerUv, d), point(radius.innerUv + h * uvRatio, d)
+            ]))
+            .style('stroke-width', uvRatio * 7);
+    };
     new api(place).getForWeek(today, function(data) {
+        var grouped = {};
+        for(var i in data) {
+            var datum = data[i];
+            var day = datum.time.getDay();
+            if(grouped[day] == undefined)
+                grouped[day] = [];
+            grouped[day].push(datum);
+        }
+
+        for(var k in grouped) {
+            for(var i in grouped[k]) {
+                var datum = grouped[k][i];
+                bar(k, i, grouped[k].length, datum.time, datum.uv);
+            }
+        }
     });
-    */
 
     var start = Date.now();
     d3.timer(function() {
         var elapsed = Date.now() - start;
-        var degree = Math.floor(0.02 * elapsed);
+        var degree = 0.005 * elapsed;
         g.attr('transform', function(d) {
             return 'rotate(' + degree + ')';
         });
