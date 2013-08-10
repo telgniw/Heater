@@ -131,7 +131,7 @@ $(function() {
         var st = point(radius.innerUv, d),
             ed = point(radius.innerUv + h * uvRatio, d);
         var dir = vector(st, ed), base = pVector(st, ed);
-        var w = 1 + Math.pow(Math.E * 2, uvRatio * 2);
+        var w = 1 + Math.pow(Math.E * 1.8, uvRatio * 2);
         gUv.append('path')
             .attr('class', 'line uv')
             .attr('d', line([
