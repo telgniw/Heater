@@ -84,14 +84,16 @@ $(function() {
         };
     };
     var bar = function(pi, pj, lj, time, uv) {
+        if(lj <= 0 || uv <= 0)
+            return;
         var p = 2 * Math.PI / n;
         var d = p * (pi + pj/lj);
-        var h = radius.outerUv - radius.innerUv;
-        var uvRatio = uv / 15;
+        var h = radius.outerUv - radius.shift - radius.innerUv;
+        var uvRatio = uv / 16;
         var st = point(radius.innerUv, d),
             ed = point(radius.innerUv + h * uvRatio, d);
         var dir = vector(st, ed), base = pVector(st, ed);
-        var w = 1 + Math.pow(Math.E * 1.8, uvRatio * 2);
+        var w = 1.2 + Math.pow(Math.E * 1.2, uvRatio * 2.5) * 0.75;
         gUv.append('path')
             .attr('class', 'line uv')
             .attr('d', line([
