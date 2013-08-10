@@ -102,17 +102,29 @@ $(function() {
     
     var gUv = g.append('g')
         .attr('class', 'uv');
+    var pVector = function(p1, p2) {
+        var len = Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
+        return function(p, k) {
+            return {
+                x: p.x + k * (p1.y - p2.y) / len,
+                y: p.y + k * (p2.x - p1.x) / len,
+            };
+        };
+    };
     var bar = function(pi, pj, lj, time, uv) {
         var p = 2 * Math.PI / n;
         var d = p * (pi + pj/lj);
         var h = radius.outerUv - radius.innerUv;
         var uvRatio = uv / 15;
+        var st = point(radius.innerUv, d),
+            ed = point(radius.innerUv + h * uvRatio, d);
+        var base = pVector(st, ed);
+        var w = uvRatio * 7;
         gUv.append('path')
             .attr('class', 'line uv')
             .attr('d', line([
-                point(radius.innerUv, d), point(radius.innerUv + h * uvRatio, d)
-            ]))
-            .style('stroke-width', uvRatio * 7);
+                base(st, w), base(st, -w), ed
+            ]));
     };
     new api(place).getForWeek(today, function(data) {
         var grouped = {};

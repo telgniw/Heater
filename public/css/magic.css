@@ -10,6 +10,10 @@
     fill: white;
     stroke-width: 3px;
 }
+.line.uv {
+    fill: rgb(158, 31, 98);
+    stroke-width: 0px;
+}
 .label {
     font-family: '蘋果儷中黑', '微軟正黑體', 'SimHei', monospace;
     font-size: 36px;
