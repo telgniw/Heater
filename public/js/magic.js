@@ -164,10 +164,13 @@ $(function() {
         .attr('transform', 'translate(' + dr + ',' + (height - dr) + ')')
         .text(place);
 
+    var speed = 0.005;
+    if(direction == 'counter')
+        speed = -speed;
     var start = Date.now();
     d3.timer(function() {
         var elapsed = Date.now() - start;
-        var degree = 0.005 * elapsed;
+        var degree = speed * elapsed;
         g.attr('transform', function(d) {
             return 'rotate(' + degree + ')';
         });

@@ -7,6 +7,7 @@ module.exports = function(app) {
         res.render('magic', {
             location: req.params.location,
             date: req.params.date,
+            dir: req.query.dir || 'clockwise',
         });
     });
 };
