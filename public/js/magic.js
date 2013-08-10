@@ -102,12 +102,24 @@ $(function() {
     
     var gUv = g.append('g')
         .attr('class', 'uv');
-    var pVector = function(p1, p2) {
-        var len = Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
+    var len = function(p1, p2) {
+        return Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
+    };
+    var vector = function(p1, p2) {
+        var l = len(p1, p2);
         return function(p, k) {
             return {
-                x: p.x + k * (p1.y - p2.y) / len,
-                y: p.y + k * (p2.x - p1.x) / len,
+                x: p.x + k * (p2.x - p1.x) / l,
+                y: p.y + k * (p2.y - p1.y) / l,
+            };
+        };
+    };
+    var pVector = function(p1, p2) {
+        var l = len(p1, p2);
+        return function(p, k) {
+            return {
+                x: p.x + k * (p1.y - p2.y) / l,
+                y: p.y + k * (p2.x - p1.x) / l,
             };
         };
     };
@@ -118,12 +130,13 @@ $(function() {
         var uvRatio = uv / 15;
         var st = point(radius.innerUv, d),
             ed = point(radius.innerUv + h * uvRatio, d);
-        var base = pVector(st, ed);
-        var w = uvRatio * 7;
+        var dir = vector(st, ed), base = pVector(st, ed);
+        var w = (0.1 + uvRatio) * 5;
         gUv.append('path')
             .attr('class', 'line uv')
             .attr('d', line([
-                base(st, w), base(st, -w), ed
+                base(st, w), base(st, -w),
+                dir(base(ed, -w), -2 * w), ed, dir(base(ed, w), -2 * w)
             ]));
     };
     new api(place).getForWeek(today, function(data) {
