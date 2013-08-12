@@ -10,9 +10,11 @@
     </head>
     <body>
         <script type="text/javascript">
+        <% if(locals.location != undefined) { %>
             var place = '<%= location %>';
             var today = '<%= date %>';
             var direction = '<%= dir %>';
+        <% } %>
         </script>
         <div id="magic" class="chart"></div>
 

@@ -3,6 +3,10 @@ module.exports = function(app) {
     var magicUrl = baseUrl + '/magic';
 
     // Magic circle.
+    app.get(magicUrl, function(req, res) {
+        res.render('magic');
+    });
+
     app.get(magicUrl + '/:location/:date', function(req, res) {
         res.render('magic', {
             location: req.params.location,
