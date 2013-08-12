@@ -83,23 +83,19 @@ $(function() {
             };
         };
     };
-    var bar = function(pi, pj, lj, time, uv) {
-        if(lj <= 0 || uv <= 0)
-            return;
+    var bar = function(datum) {
         var p = 2 * Math.PI / n;
-        var d = p * (pi + pj/lj);
+        var d = p * (datum.group + datum.offset/datum.groupLength);
         var h = radius.outerUv - radius.shift - radius.innerUv;
-        var uvRatio = uv / 16;
+        var uvRatio = datum.uv / 16;
         var st = point(radius.innerUv, d),
             ed = point(radius.innerUv + h * uvRatio, d);
         var dir = vector(st, ed), base = pVector(st, ed);
         var w = 1.2 + Math.pow(Math.E * 1.2, uvRatio * 2.5) * 0.75;
-        gUv.append('path')
-            .attr('class', 'line uv')
-            .attr('d', line([
-                base(st, w), base(st, -w),
-                dir(base(ed, -w), -2 * w), ed, dir(base(ed, w), -2 * w)
-            ]));
+        return line([
+            base(st, w), base(st, -w),
+            dir(base(ed, -w), -2 * w), ed, dir(base(ed, w), -2 * w)
+        ]);
     };
     new api(place).getForWeek(today, function(data) {
         var grouped = {};
@@ -111,19 +107,36 @@ $(function() {
             grouped[day].push(datum);
         }
 
+        var sorted = [];
         for(var k in grouped) {
             var sum = 0;
             for(var i in grouped[k]) {
                 var datum = grouped[k][i];
                 sum += datum.uv + 1;
             }
+
             var current = 0;
             for(var i in grouped[k]) {
                 var datum = grouped[k][i];
                 current += datum.uv + 1;
-                bar(k, current, sum, datum.time, datum.uv);
+
+                datum.group = k;
+                datum.offset = current;
+                datum.groupLength = sum;
+
+                if(datum.groupLength <= 0 || datum.uv <= 0)
+                    continue;
+
+                sorted.push(datum);
             }
         }
+
+        gUv.selectAll('path')
+            .data(sorted)
+            .enter()
+            .append('path')
+            .attr('class', 'line uv')
+            .attr('d', bar);
     });
 
     svg.append('circle')
