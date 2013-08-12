@@ -25,8 +25,8 @@ $(function() {
         .attr('transform', 'translate(' + center.x + ',' + center.y + ')')
         .append('g');
 
-    var n = 7, wuxing = ['日', '月', '水', '火', '木', '金', '土'];
-    var d = 2 * Math.PI / n;
+    var wuxing = ['日', '月', '水', '火', '木', '金', '土'];
+    var d = 2 * Math.PI / 7;
     var line = d3.svg.line()
         .x(function(d) { return d.x })
         .y(function(d) { return d.y })
@@ -56,7 +56,7 @@ $(function() {
             .attr('class', 'label star')
             .attr('x', -18)
             .attr('y', -(radius.star + radius.shift))
-            .attr('transform', 'rotate(' + (360 / n * ((i + 4) % 7) - 180) + ')')
+            .attr('transform', 'rotate(' + (360 / 7 * ((i + 4) % 7) - 180) + ')')
             .text(wuxing[i]);
     }
     
@@ -84,7 +84,7 @@ $(function() {
         };
     };
     var bar = function(datum) {
-        var p = 2 * Math.PI / n;
+        var p = 2 * Math.PI / 7;
         var d = p * (datum.group + datum.offset/datum.groupLength);
         var h = radius.outerUv - radius.shift - radius.innerUv;
         var uvRatio = datum.uv / 16;
@@ -108,7 +108,7 @@ $(function() {
         }
 
         var sorted = [];
-        for(var k in grouped) {
+        for(var k = 0; k < 7; k++) {
             var sum = 0;
             for(var i in grouped[k]) {
                 var datum = grouped[k][i];
@@ -123,6 +123,7 @@ $(function() {
                 datum.group = k;
                 datum.offset = current;
                 datum.groupLength = sum;
+                datum.groupSize = grouped[k].length;
 
                 if(datum.groupLength <= 0 || datum.uv <= 0)
                     continue;
@@ -160,33 +161,32 @@ $(function() {
         .attr('cy', center.y)
         .attr('r', radius.outerUv);
 
+    var isCounter = (direction == 'counter');
     var r = radius.place - radius.shift;
     var dr = (radius.place * (Math.sqrt(2) - 1) + r) * Math.cos(0.25 * Math.PI);
     svg.append('circle')
         .attr('class', 'line place')
-        .attr('cx', radius.place)
+        .attr('cx', isCounter? width - radius.place : radius.place)
         .attr('cy', height - radius.place)
         .attr('r', radius.place);
     svg.append('circle')
         .attr('class', 'line place')
-        .attr('cx', dr)
+        .attr('cx', isCounter? width - dr : dr)
         .attr('cy', height - dr)
         .attr('r', r);
     svg.append('text')
-        .attr('x', -18 * place.length)
-        .attr('y', 12)
+        .attr('x', -15 * place.length)
+        .attr('y', 10)
         .attr('class', 'label place')
-        .attr('transform', 'translate(' + dr + ',' + (height - dr) + ')')
+        .attr('transform', 'translate(' + (isCounter? width- dr : dr) + ',' + (height - dr) + ')')
         .text(place);
 
-    var speed = 0.005;
-    if(direction == 'counter')
-        speed = -speed;
+    var speed = (isCounter? -1 : 1) * 0.005;
     var start = Date.now();
     d3.timer(function() {
         var elapsed = Date.now() - start;
         var degree = speed * elapsed;
-        g.attr('transform', function(d) {
+        g.attr('transform', function() {
             return 'rotate(' + degree + ')';
         });
     });

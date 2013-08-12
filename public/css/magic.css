@@ -20,3 +20,6 @@
     font-weight: bold;
     fill: rgb(158, 31, 98);
 }
+.label.place {
+    font-size: 30px;
+}
