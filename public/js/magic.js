@@ -193,10 +193,10 @@ $(function() {
             .style('opacity', function(datum, i) {
                 var pi2 = 2 * Math.PI;
                 var p = pi2 / 7;
-                var d = p * (datum.group + datum.offset/datum.groupLength) - 0.1 * degree - pi2;
+                var d = p * (datum.group + datum.offset/datum.groupLength) + pi2 - (0.2 * degree % pi2);
                 var k = d % pi2;
                 var j = (k < p)? 1 : 0;
-                return Math.sin(7 * k) * j;
+                return (1 - Math.sin(3.5 * k) * j) * 0.8 + 0.2;
             });
     });
 });
