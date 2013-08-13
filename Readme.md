@@ -8,6 +8,10 @@ Fetch weather information (uv) from [cwb.gov.tw] for heater.
 
 [cwb.gov.tw]: http://www.cwb.gov.tw/
 
+See [here](http://yi.csie.org/heater/vis/magic) for the magic circle visualization using [D3].
+
+[![Snapshot](http://github.com/telgniw/Heater/raw/master/images/video-snapshot.png)](http://vimeo.com/72251188?autoplay=1)
+
 Library Used
 ------------
 
