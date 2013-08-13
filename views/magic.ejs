@@ -9,18 +9,24 @@
         <link rel="stylesheet" type="text/css" href="/heater/css/magic.css">
     </head>
     <body>
+        <div id="magic" class="chart"></div>
+
+        <!-- Scripts: placed at the end of the document so that the pages loads faster. -->
+        <% include layoutScripts %>
+        <script type="text/javascript" src="/heater/js/magic.js"></script>
         <script type="text/javascript">
         <% if(locals.location != undefined) { %>
             var place = '<%= location %>';
             var today = '<%= date %>';
             var direction = '<%= dir %>';
         <% } %>
-        </script>
-        <div id="magic" class="chart"></div>
+        $(function() {
+            magic.init();
 
-        <!-- Scripts: placed at the end of the document so that the pages loads faster. -->
-        <% include layoutScripts %>
-        <script type="text/javascript" src="/heater/js/magic.js"></script>
+            if(typeof place != 'undefined')
+                magic.draw(place, today, direction);
+        });
+        </script>
     </body>
 </html>
 

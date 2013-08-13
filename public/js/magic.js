@@ -95,7 +95,7 @@ var magic = function() {
         that.initText = initText;
         that.g = g;
     };
-    that.draw = function() {
+    that.draw = function(place, today, direction) {
         that.initText.remove();
 
         var g = that.g;
@@ -232,9 +232,3 @@ var magic = function() {
 
     return that;
 }();
-$(function() {
-    magic.init();
-
-    if(typeof place != 'undefined')
-        magic.draw();
-});
