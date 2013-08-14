@@ -99,6 +99,8 @@ var magicCircle = function(scale) {
         that.stopAnimation();
     };
     that.draw = function(place, today, direction) {
+        that.clear();
+
         var g = that.g;
         var gUv = g.append('g')
             .attr('class', 'uv');
