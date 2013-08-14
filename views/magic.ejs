@@ -15,17 +15,8 @@
         <% include layoutScripts %>
         <script type="text/javascript" src="/heater/js/magic.js"></script>
         <script type="text/javascript">
-        <% if(locals.location != undefined) { %>
-            var place = '<%= location %>';
-            var today = '<%= date %>';
-            var direction = '<%= dir %>';
-        <% } %>
-        $(function() {
-            magic.init();
-
-            if(typeof place != 'undefined')
-                magic.draw(place, today, direction);
-        });
+        var magic = magicCircle();
+        magic.init();
         </script>
     </body>
 </html>

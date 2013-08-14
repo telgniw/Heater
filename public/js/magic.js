@@ -1,4 +1,4 @@
-var magic = function() {
+var magicCircle = function() {
     var width = 700, height = 700;
     var margin = { top: 25, right: 50, bottom: 25, left: 50 };
 
@@ -231,4 +231,4 @@ var magic = function() {
     };
 
     return that;
-}();
+};
