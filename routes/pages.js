@@ -11,4 +11,14 @@ module.exports = function(app) {
             });
         });
     });
+
+    // Visualization: magic circle.
+    var visUrl = baseUrl + '/vis';
+    app.get(visUrl + '/magic', function(req, res) {
+        uvQuery.getSortedLocationList(function(locations) {
+            res.render('vis/magic', {
+                locations: locations,
+            });
+        });
+    });
 };

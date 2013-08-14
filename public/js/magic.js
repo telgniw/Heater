@@ -1,5 +1,7 @@
-var magicCircle = function() {
-    var width = 700, height = 700;
+var magicCircle = function(scale) {
+    scale = scale || 1;
+
+    var width = 700 * scale, height = 700 * scale;
     var margin = { top: 25, right: 50, bottom: 25, left: 50 };
 
     var center = {
@@ -7,11 +9,11 @@ var magicCircle = function() {
         y: height / 2,
     };
     var radius = {
-        star: 110,
-        innerUv: 225,
-        outerUv: 350,
-        shift: 25,
-        place: 75,
+        star: 110 * scale,
+        innerUv: 225 * scale,
+        outerUv: 350 * scale,
+        shift: 25 * scale,
+        place: 75 * scale,
     };
 
     var wuxing = ['日', '月', '水', '火', '木', '金', '土'];
@@ -25,8 +27,8 @@ var magicCircle = function() {
 
     var that = {};
     that.isAnimated = false;
-    that.init = function() {
-        var svg = d3.select('#magic')
+    that.init = function(target) {
+        var svg = d3.select(target)
             .append('svg')
             .attr('width', margin.left + width + margin.right)
             .attr('height', margin.top + height + margin.bottom)
@@ -89,14 +91,20 @@ var magicCircle = function() {
 
         that.drawLabel('請選擇地點');
     };
-    that.draw = function(place, today, direction) {
+    that.clear = function() {
         var g = that.g;
         g.select('g.uv').remove();
 
+        that.drawLabel('');
+        that.stopAnimation();
+    };
+    that.draw = function(place, today, direction) {
+        var g = that.g;
         var gUv = g.append('g')
             .attr('class', 'uv');
 
-        that.drawLabel(place);
+        var isCounter = (direction == 'counter');
+        that.drawLabel(place, isCounter);
 
         var len = function(p1, p2) {
             return Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
@@ -176,7 +184,6 @@ var magicCircle = function() {
                 .attr('d', bar);
         });
 
-        var isCounter = (direction == 'counter');
         var speed = (isCounter? -1 : 1) * 0.005;
         d3.timer(function() {
             if(!that.isAnimated)
@@ -208,22 +215,26 @@ var magicCircle = function() {
             label = svg.append('g')
                 .attr('class', 'label');
             label.append('circle')
-                .attr('class', 'line place')
-                .attr('cx', isCounter? width - radius.place : radius.place)
+                .attr('class', 'line place outer')
                 .attr('cy', height - radius.place)
                 .attr('r', radius.place);
             label.append('circle')
-                .attr('class', 'line place')
-                .attr('cx', isCounter? width - dr : dr)
+                .attr('class', 'line place inner')
                 .attr('cy', height - dr)
                 .attr('r', r);
             label.append('text')
-                .attr('class', 'label place')
-                .attr('transform', 'translate(' + (isCounter? width- dr : dr) + ',' + (height - dr) + ')');
+                .attr('class', 'label place');
         }
 
-        var textLabel = label.select('text');
+        label.select('circle.outer')
+            .attr('cx', isCounter? width - radius.place : radius.place);
+        label.select('circle.inner')
+            .attr('cx', isCounter? width - dr : dr);
+
+        var textLabel = label.select('text')
+            .attr('transform', 'translate(' + (isCounter? width- dr : dr) + ',' + (height - dr) + ')');
         textLabel.selectAll('tspan').remove();
+
         var nLines = Math.ceil(text.length / 3);
         for(var i = 0; i < text.length; i += 3) {
             var line = text.slice(i, i + 3);
