@@ -54,13 +54,6 @@ var magicCircle = function() {
             .attr('cy', center.y)
             .attr('r', radius.outerUv);
 
-        var initText = svg.append('text')
-            .attr('class', 'label select-place')
-            .attr('x', -150)
-            .attr('y', 0)
-            .attr('transform', 'translate(' + center.x + ',' + (0.5 * (radius.innerUv - radius.shift)) + ')')
-            .text('請選擇地點');
-
         var g = svg.append('g')
             .attr('transform', 'translate(' + center.x + ',' + center.y + ')')
             .append('g');
@@ -92,15 +85,19 @@ var magicCircle = function() {
         }
 
         that.svg = svg;
-        that.initText = initText;
         that.g = g;
+
+        that.drawLabel('請選擇地點');
     };
     that.draw = function(place, today, direction) {
-        that.initText.remove();
-
         var g = that.g;
+        g.select('g.uv').remove();
+
         var gUv = g.append('g')
             .attr('class', 'uv');
+
+        that.drawLabel(place);
+
         var len = function(p1, p2) {
             return Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
         };
@@ -180,27 +177,6 @@ var magicCircle = function() {
         });
 
         var isCounter = (direction == 'counter');
-        var r = radius.place - radius.shift;
-        var dr = (radius.place * (Math.sqrt(2) - 1) + r) * Math.cos(0.25 * Math.PI);
-
-        var svg = that.svg;
-        svg.append('circle')
-            .attr('class', 'line place')
-            .attr('cx', isCounter? width - radius.place : radius.place)
-            .attr('cy', height - radius.place)
-            .attr('r', radius.place);
-        svg.append('circle')
-            .attr('class', 'line place')
-            .attr('cx', isCounter? width - dr : dr)
-            .attr('cy', height - dr)
-            .attr('r', r);
-        svg.append('text')
-            .attr('x', -15 * place.length)
-            .attr('y', 10)
-            .attr('class', 'label place')
-            .attr('transform', 'translate(' + (isCounter? width- dr : dr) + ',' + (height - dr) + ')')
-            .text(place);
-
         var speed = (isCounter? -1 : 1) * 0.005;
         d3.timer(function() {
             if(!that.isAnimated)
@@ -221,6 +197,41 @@ var magicCircle = function() {
                     return (1 - Math.sin(3.5 * k) * j) * 0.8 + 0.2;
                 });
         });
+    };
+    that.drawLabel = function(text, isCounter) {
+        var r = radius.place - radius.shift;
+        var dr = (radius.place * (Math.sqrt(2) - 1) + r) * Math.cos(0.25 * Math.PI);
+
+        var svg = that.svg;
+        var label = svg.select('g.label');
+        if(label.empty()) {
+            label = svg.append('g')
+                .attr('class', 'label');
+            label.append('circle')
+                .attr('class', 'line place')
+                .attr('cx', isCounter? width - radius.place : radius.place)
+                .attr('cy', height - radius.place)
+                .attr('r', radius.place);
+            label.append('circle')
+                .attr('class', 'line place')
+                .attr('cx', isCounter? width - dr : dr)
+                .attr('cy', height - dr)
+                .attr('r', r);
+            label.append('text')
+                .attr('class', 'label place')
+                .attr('transform', 'translate(' + (isCounter? width- dr : dr) + ',' + (height - dr) + ')');
+        }
+
+        var textLabel = label.select('text');
+        textLabel.selectAll('tspan').remove();
+        var nLines = Math.ceil(text.length / 3);
+        for(var i = 0; i < text.length; i += 3) {
+            var line = text.slice(i, i + 3);
+            textLabel.append('tspan')
+                .attr('x', -0.5 * line.length + 'em')
+                .attr('y', ((i / 3) - 0.5 * (nLines - 2)) + 'em')
+                .text(line);
+        }
     };
     that.startAnimation = function() {
         that.isAnimated = true;
