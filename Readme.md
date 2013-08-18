@@ -17,9 +17,12 @@ Library Used
 
 * [BeautifulSoup4]: for parsing html and xml data.
 * [D3]: data-driven documents, a javascript visualization tool.
+* [Flatstrap] and [Bootstrap Datepicker].
 
 [BeautifulSoup4]: http://www.crummy.com/software/BeautifulSoup/
 [D3]: http://d3js.org/
+[Flatstrap]: http://flatstrap.org/
+[Bootstrap Datepicker]: http://vitalets.github.io/bootstrap-datepicker/
 
 License
 -------
