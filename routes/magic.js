@@ -4,6 +4,6 @@ module.exports = function(app) {
 
     // Magic circle.
     app.get(magicUrl, function(req, res) {
-        res.render('magic');
+        res.render('magic_older');
     });
 };

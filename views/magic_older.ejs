@@ -6,13 +6,14 @@
 
         <!-- Stylesheets -->
         <% include layoutStyles %>
+        <link rel="stylesheet" type="text/css" href="/heater/css/magic_older.css">
     </head>
     <body>
         <div id="magic" class="chart"></div>
 
         <!-- Scripts: placed at the end of the document so that the pages loads faster. -->
         <% include layoutScripts %>
-        <script type="text/javascript" src="/heater/js/magic.js"></script>
+        <script type="text/javascript" src="/heater/js/magic_older.js"></script>
         <script type="text/javascript">
         var magic = magicCircle();
         magic.init('#magic');
