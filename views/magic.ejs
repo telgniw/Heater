@@ -14,8 +14,29 @@
         <% include layoutScripts %>
         <script type="text/javascript" src="/heater/js/magic.js"></script>
         <script type="text/javascript">
-        var magic = magicCircle();
-        magic.init('#magic');
+        var svg = d3.select('#magic')
+            .append('svg')
+            .attr('width', 1280)
+            .attr('height', 768);
+
+        svg.append('g')
+            .attr('class', 'magic left')
+            .attr('transform', 'translate(64,128)');
+        magicCircle('.magic.left', POSITION.LEFT);
+
+        svg.append('path')
+            .attr('d', makeLine([
+                { x: 640, y: 128 },
+                { x: 640, y: 768 },
+            ]))
+            .style('fill', 'none')
+            .style('stroke', makeRgb(COLOR.NORMAL))
+            .style('stroke-width', 4);
+
+        svg.append('g')
+            .attr('class', 'magic right')
+            .attr('transform', 'translate(704,128)');
+        magicCircle('.magic.right', POSITION.RIGHT);
         </script>
     </body>
 </html>

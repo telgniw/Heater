@@ -1,4 +1,47 @@
-var magicCircle = function() {
+var POSITION = {
+    LEFT: 0,
+    RIGHT: 1,
+};
+
+var COLOR = {
+    DARK: {
+        r: 106,
+        g: 25,
+        b: 62,
+    },
+    NORMAL: {
+        r: 145,
+        g: 25,
+        b: 84,
+    },
+    LIGHT: {
+        r: 179,
+        g: 81,
+        b: 126,
+    },
+};
+
+var makeLine = d3.svg.line()
+    .x(function(d) { return d.x; })
+    .y(function(d) { return d.y; })
+    .interpolate('linear');
+var makePoint = function(r, d) {
+    return {
+        x: r * Math.cos(d - 0.5 * Math.PI),
+        y: r * Math.sin(d - 0.5 * Math.PI),
+    };
+};
+var makeRgb = function(c) {
+    return 'rgb(' + c.r + ',' + c.g + ',' + c.b + ')';
+};
+var makeRotate = function(d) {
+    return 'rotate(' + (180 * d / Math.PI) + ')';
+};
+var makeTranslate = function(t) {
+    return 'translate(' + t.x + ',' + t.y + ')';
+};
+
+var magicCircle = function(target, position) {
     var width = 512, height = 512;
 
     var center = {
@@ -12,24 +55,6 @@ var magicCircle = function() {
         barUv: 255,
     };
 
-    var color = {
-        dark: {
-            r: 106,
-            g: 25,
-            b: 62,
-        },
-        normal: {
-            r: 145,
-            g: 25,
-            b: 84,
-        },
-        light: {
-            r: 179,
-            g: 81,
-            b: 126,
-        },
-    };
-
     var barDate = [
         { zh: '日', en: 'SUN' },
         { zh: '月', en: 'MON' },
@@ -40,30 +65,14 @@ var magicCircle = function() {
         { zh: '土', en: 'SAT' },
     ];
 
-    var makeLine = d3.svg.line()
-        .x(function(d) { return d.x; })
-        .y(function(d) { return d.y; })
-        .interpolate('linear');
-    var makePoint = function(r, d) {
-        return {
-            x: r * Math.cos(d - 0.5 * Math.PI),
-            y: r * Math.sin(d - 0.5 * Math.PI),
-        };
-    };
-    var makeRgb = function(c) {
-        return 'rgb(' + c.r + ',' + c.g + ',' + c.b + ')';
-    };
-    var makeRotate = function(d) {
-        return 'rotate(' + (180 * d / Math.PI) + ')';
-    };
-    var makeTranslate = function(t) {
-        return 'translate(' + t.x + ',' + t.y + ')';
+    var that = {};
+    that._ = {
+        position: position || POSITION.LEFT,
     };
 
-    var that = {}
     that.init = function(target) {
         var svg = d3.select(target)
-            .append('svg')
+            .append('g')
             .attr('width', width)
             .attr('height', height)
             .append('g');
@@ -72,7 +81,7 @@ var magicCircle = function() {
             .attr('cx', center.x)
             .attr('cy', center.y)
             .attr('r', radius.center)
-            .style('fill', makeRgb(color.dark))
+            .style('fill', makeRgb(COLOR.DARK))
             .style('stroke', 'none');
 
         svg.append('circle')
@@ -80,7 +89,7 @@ var magicCircle = function() {
             .attr('cy', center.y)
             .attr('r', radius.barTime - 10)
             .style('fill', 'none')
-            .style('stroke', makeRgb(color.light))
+            .style('stroke', makeRgb(COLOR.LIGHT))
             .style('stroke-width', 25);
 
         var g = svg.append('g')
@@ -107,14 +116,23 @@ var magicCircle = function() {
                     makePoint(radius.barTime - 2, st),
                 ]))
                 .style('fill', 'none')
-                .style('stroke', makeRgb(color.normal))
+                .style('stroke', makeRgb(COLOR.NORMAL))
                 .style('stroke-width', 3.5);
+        }
+
+        var deg = 2 * Math.PI / barDate.length;
+        if(this._.position == POSITION.RIGHT) {
+            deg = -deg;
+        }
+        for(var i = 0; i < barDate.length; i++) {
+            var st = deg * i,
+                ed = deg * ((i + 3) % barDate.length);
 
             g.append('text')
                 .attr('x', -16)
                 .attr('y', -radius.barDate + 32)
                 .attr('transform', makeRotate(st + 0.5 * deg))
-                .style('fill', makeRgb(color.normal))
+                .style('fill', makeRgb(COLOR.NORMAL))
                 .style('font-family', '"Apple Gothic", "SimHei", monospace')
                 .style('font-size', 32)
                 .style('font-weight', 200)
@@ -124,7 +142,7 @@ var magicCircle = function() {
                 .attr('x', -16)
                 .attr('y', -radius.center - 12)
                 .attr('transform', makeRotate(st + 0.5 * deg))
-                .style('fill', makeRgb(color.normal))
+                .style('fill', makeRgb(COLOR.NORMAL))
                 .style('font-family', '"Helvetica Neue", "Helvetica", "SimHei", monospace')
                 .style('font-size', 16)
                 .style('font-weight', 200)
@@ -192,5 +210,6 @@ var magicCircle = function() {
         }
     };
 
+    that.init(target);
     return that;
 }
