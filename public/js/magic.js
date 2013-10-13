@@ -225,9 +225,7 @@ var magicCircle = function(target, position) {
         this.stopAnimation();
     };
     that.draw = function(today, place) {
-        this._.g
-            .select('g.uv')
-            .remove();
+        this._.g.select('g.uv').remove();
 
         var g = this._.g
             .append('g')

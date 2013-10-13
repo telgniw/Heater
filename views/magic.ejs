@@ -41,9 +41,38 @@
             magic_l = magicCircle('.magic.left', POSITION.LEFT);
             magic_r = magicCircle('.magic.right', POSITION.RIGHT);
         };
+        var clearLabel = function(position) {
+            var clz = (position == POSITION.LEFT)? 'left' : 'right';
+            svg.select('g.label.' + clz)
+                .transition()
+                .duration(1000)
+                .style('opacity', 0)
+                .remove();
+        };
         var drawLabel = function(text_l, text_r) {
-            var g = svg.append('g')
+            svg.select('g.label').remove();
+
+            var draw = function(g, text, x, y) {
+                for(var i = 0; i < text.length; i++) {
+                    var word = text[i];
+                    g.append('text')
+                        .attr('x', x)
+                        .attr('y', y + (i + 1) * 36)
+                        .style('fill', makeRgb(COLOR.NORMAL))
+                        .style('font-family', '"Apple Gothic", "SimHei", monospace')
+                        .style('font-size', 36)
+                        .style('font-weight', 200)
+                        .text(word);
+                }
+            };
+
+            var g_l = svg.append('g')
                 .attr('class', 'label left');
+            draw(g_l, text_l, 592, 128);
+
+            var g_r = svg.append('g')
+                .attr('class', 'label right');
+            draw(g_r, text_r, 652, 128);
         };
         var start = function(today, place_l, place_r) {
             magic_l.draw(today, place_l);
@@ -51,8 +80,12 @@
 
             magic_r.draw(today, place_r);
             magic_r.startAnimation();
+
+            drawLabel(place_l, place_r);
         };
         var stop = function(position) {
+            clearLabel(position);
+
             if(position == POSITION.LEFT) {
                 magic_l.stopAnimation();
                 magic_l.clear();
