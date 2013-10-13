@@ -14,29 +14,57 @@
         <% include layoutScripts %>
         <script type="text/javascript" src="/heater/js/magic.js"></script>
         <script type="text/javascript">
-        var svg = d3.select('#magic')
-            .append('svg')
-            .attr('width', 1280)
-            .attr('height', 768);
+        var svg, magic_l, magic_r;
+        var init = function() {
+            svg = d3.select('#magic')
+                .append('svg')
+                .attr('width', 1280)
+                .attr('height', 768);
 
-        svg.append('g')
-            .attr('class', 'magic left')
-            .attr('transform', 'translate(64,128)');
-        magicCircle('.magic.left', POSITION.LEFT);
+            svg.append('g')
+                .attr('class', 'magic left')
+                .attr('transform', 'translate(64,128)');
 
-        svg.append('path')
-            .attr('d', makeLine([
-                { x: 640, y: 128 },
-                { x: 640, y: 768 },
-            ]))
-            .style('fill', 'none')
-            .style('stroke', makeRgb(COLOR.NORMAL))
-            .style('stroke-width', 4);
+            svg.append('path')
+                .attr('d', makeLine([
+                    { x: 640, y: 128 },
+                    { x: 640, y: 768 },
+                ]))
+                .style('fill', 'none')
+                .style('stroke', makeRgb(COLOR.NORMAL))
+                .style('stroke-width', 4);
 
-        svg.append('g')
-            .attr('class', 'magic right')
-            .attr('transform', 'translate(704,128)');
-        magicCircle('.magic.right', POSITION.RIGHT);
+            svg.append('g')
+                .attr('class', 'magic right')
+                .attr('transform', 'translate(704,128)');
+
+            magic_l = magicCircle('.magic.left', POSITION.LEFT);
+            magic_r = magicCircle('.magic.right', POSITION.RIGHT);
+        };
+        var drawLabel = function(text_l, text_r) {
+            var g = svg.append('g')
+                .attr('class', 'label left');
+        };
+        var start = function(today, place_l, place_r) {
+            magic_l.draw(today, place_l);
+            magic_l.startAnimation();
+
+            magic_r.draw(today, place_r);
+            magic_r.startAnimation();
+        };
+        var stop = function(position) {
+            if(position == POSITION.LEFT) {
+                magic_l.stopAnimation();
+                magic_l.clear();
+            }
+            else {
+                magic_r.stopAnimation();
+                magic_r.clear();
+            }
+        };
+        $(function() {
+            init();
+        });
         </script>
     </body>
 </html>

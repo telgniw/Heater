@@ -67,7 +67,9 @@ var magicCircle = function(target, position) {
 
     var that = {};
     that._ = {
-        position: position || POSITION.LEFT,
+        animationOffset: 0,
+        animationStartTime: 0,
+        position: position,
     };
 
     that.init = function(target) {
@@ -208,8 +210,146 @@ var magicCircle = function(target, position) {
                 .style('font-weight', 100)
                 .text('PM')
         }
+        
+        this._.svg = svg;
+        this._.g = g;
+    };
+    that.clear = function() {
+        this._.g
+            .select('g.uv')
+            .transition()
+            .duration(1000)
+            .style('opacity', 0)
+            .remove();
+
+        this.stopAnimation();
+    };
+    that.draw = function(today, place) {
+        this._.g
+            .select('g.uv')
+            .remove();
+
+        var g = this._.g
+            .append('g')
+            .attr('class', 'uv');
+
+        var len = function(p1, p2) {
+            return Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
+        };
+        var vector = function(p1, p2) {
+            var l = len(p1, p2);
+            return function(p, k) {
+                return {
+                    x: p.x + k * (p2.x - p1.x) / l,
+                    y: p.y + k * (p2.y - p1.y) / l,
+                };
+            };
+        };
+        var pVector = function(p1, p2) {
+            var l = len(p1, p2);
+            return function(p, k) {
+                return {
+                    x: p.x + k * (p1.y - p2.y) / l,
+                    y: p.y + k * (p2.x - p1.x) / l,
+                };
+            };
+        };
+        var bar = function(datum) {
+            var p = 2 * Math.PI / 7;
+            var d = p * (datum.group + datum.offset/datum.groupLength);
+            var h = radius.barUv - radius.barTime;
+            var uvRatio = datum.uv / 12;
+            var st = makePoint(radius.barTime + 2, d),
+                ed = makePoint(radius.barTime + h * uvRatio, d);
+            var dir = vector(st, ed), base = pVector(st, ed);
+            var w = 1.5 + Math.pow(Math.E * 1.2, uvRatio * 2.5) * 0.75;
+            return makeLine([
+                base(st, w), base(st, -w),
+                dir(base(ed, -w), -2 * w), ed, dir(base(ed, w), -2 * w)
+            ]);
+        };
+        new api(place).getForWeek(today, function(data) {
+            var grouped = {};
+            for(var i in data) {
+                var datum = data[i];
+                var day = datum.time.getDay();
+                if(grouped[day] == undefined)
+                    grouped[day] = [];
+                grouped[day].push(datum);
+            }
+
+            var sorted = [];
+            for(var k = 0; k < 7; k++) {
+                var sum = 0;
+                for(var i in grouped[k]) {
+                    var datum = grouped[k][i];
+                    sum += datum.uv + 1;
+                }
+
+                var current = 0;
+                for(var i in grouped[k]) {
+                    var datum = grouped[k][i];
+                    current += datum.uv + 1;
+
+                    datum.group = k;
+                    datum.offset = current;
+                    datum.groupLength = sum;
+                    datum.groupSize = grouped[k].length;
+
+                    if(datum.groupLength <= 0 || datum.uv <= 0)
+                        continue;
+
+                    sorted.push(datum);
+                }
+            }
+
+            g.selectAll('path')
+                .data(sorted)
+                .enter()
+                .append('path')
+                .attr('class', 'uv')
+                .attr('d', bar)
+                .style('fill', makeRgb(COLOR.LIGHT))
+                .style('stroke', 'none')
+                .style('opacity', 0)
+                .transition()
+                .duration(1000)
+                .style('opacity', 1);
+        });
+    };
+    that.startAnimation = function() {
+        this._.animationOn = true;
+        this._.animationStartTime = Date.now();
+    };
+    that.stopAnimation = function() {
+        this._.animationOn = false;
+        if(this._.animationStartTime > 0) {
+            this._.animationOffset += Date.now() - this._.animationStartTime;
+        }
     };
 
     that.init(target);
+
+    var updateAnimation = function() {
+        if(!this._.animationOn) {
+            return;
+        }
+
+        var elapsed = Date.now() - this._.animationStartTime
+            + this._.animationOffset;
+        var deg = 0.005 * elapsed;
+        if(this._.position == POSITION.RIGHT) {
+            deg = -deg;
+        }
+
+        this._.g
+            .attr('transform', function() {
+                return 'rotate(' + deg + ')';
+            });
+    };
+    d3.timer(function() {
+        updateAnimation.apply(that);
+    });
+
     return that;
 }
