@@ -315,6 +315,9 @@ var magicCircle = function(target, position) {
                 .style('opacity', 1);
         });
     };
+    that.isAnimated = function() {
+        return this._.animationOn;
+    };
     that.startAnimation = function() {
         this._.animationOn = true;
         this._.animationStartTime = Date.now();
