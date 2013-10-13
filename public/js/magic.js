@@ -256,11 +256,11 @@ var magicCircle = function(target, position) {
             var p = 2 * Math.PI / 7;
             var d = p * (datum.group + datum.offset/datum.groupLength);
             var h = radius.barUv - radius.barTime;
-            var uvRatio = datum.uv / 12;
+            var uvRatio = datum.uv / 15;
             var st = makePoint(radius.barTime + 2, d),
                 ed = makePoint(radius.barTime + h * uvRatio, d);
             var dir = vector(st, ed), base = pVector(st, ed);
-            var w = 1.5 + Math.pow(Math.E * 1.2, uvRatio * 2.5) * 0.75;
+            var w = 1.5 + Math.pow(Math.E * 1.2, uvRatio * 2.3) * 0.75;
             return makeLine([
                 base(st, w), base(st, -w),
                 dir(base(ed, -w), -2 * w), ed, dir(base(ed, w), -2 * w)
@@ -324,9 +324,6 @@ var magicCircle = function(target, position) {
     };
     that.stopAnimation = function() {
         this._.animationOn = false;
-        if(this._.animationStartTime > 0) {
-            this._.animationOffset += Date.now() - this._.animationStartTime;
-        }
     };
 
     that.init(target);
@@ -336,9 +333,12 @@ var magicCircle = function(target, position) {
             return;
         }
 
-        var elapsed = Date.now() - this._.animationStartTime
-            + this._.animationOffset;
-        var deg = 0.005 * elapsed;
+        now = Date.now();
+        this._.animationOffset += now - this._.animationStartTime;
+        this._.animationOffset %= 36000;
+        this._.animationStartTime = now;
+
+        var deg = 0.01 * this._.animationOffset;
         if(this._.position == POSITION.RIGHT) {
             deg = -deg;
         }
