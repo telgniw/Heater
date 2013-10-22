@@ -361,6 +361,17 @@ var magicCircle = function(target, position) {
             .attr('transform', function() {
                 return 'rotate(' + deg + ')';
             });
+
+        this._.g.select('g.uv')
+            .selectAll('path.uv')
+            .style('opacity', function(datum, i) {
+                var pi2 = 2 * Math.PI;
+                var p = pi2 / 7;
+                var d = p * (datum.group + datum.offset/datum.groupLength) + pi2 - (0.2 * deg % pi2);
+                var k = d % Math.PI;
+                var j = (k < p)? 1 : 0;
+                return (1 - Math.sin(3.5 * k) * j) * 0.8 + 0.2;
+            });
     };
     d3.timer(function() {
         updateAnimation.apply(that);
