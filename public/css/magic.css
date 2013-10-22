@@ -1,0 +1,11 @@
+div#toast {
+    background-color: rgb(242, 242, 242);
+    background-image: url('/heater/img/toast.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    width: 1280px;
+    height: 768px;
+
+    position: fixed;
+}

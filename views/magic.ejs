@@ -6,19 +6,16 @@
 
         <!-- Stylesheets -->
         <% include layoutStyles %>
+        <link rel="stylesheet" type="text/css" href="/heater/css/magic.css">
     </head>
     <body>
+        <div id="toast" class="image"></div>
         <div id="magic" class="chart"></div>
 
         <!-- Scripts: placed at the end of the document so that the pages loads faster. -->
         <% include layoutScripts %>
         <script type="text/javascript" src="/heater/js/magic.js"></script>
         <script type="text/javascript">
-        var OPACITY = {
-            ON: 1,
-            OFF: 0.6,
-        };
-
         var svg, magic_l, magic_r;
         var init = function() {
             svg = d3.select('#magic')
@@ -81,6 +78,11 @@
             draw(g_r, text_r, 652, 128);
         };
         var start = function(today, place_l, place_r) {
+            d3.select('#toast')
+                .transition()
+                .duration(500)
+                .style('opacity', OPACITY.OFF);
+
             svg
                 .transition()
                 .duration(500)
@@ -109,8 +111,15 @@
             if((!magic_l.isAnimated()) && (!magic_r.isAnimated())) {
                 svg
                     .transition()
+                    .delay(1000)
                     .duration(2000)
                     .style('opacity', OPACITY.OFF);
+
+                d3.select('#toast')
+                    .transition()
+                    .delay(3000)
+                    .duration(1000)
+                    .style('opacity', OPACITY.ON);
             }
         };
         $(function() {

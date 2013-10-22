@@ -3,6 +3,12 @@ var POSITION = {
     RIGHT: 1,
 };
 
+var OPACITY = {
+    ON: 1,
+    PAUSE: 0.75,
+    OFF: 0,
+};
+
 var COLOR = {
     DARK: {
         r: 106,
@@ -215,6 +221,10 @@ var magicCircle = function(target, position) {
         this._.g = g;
     };
     that.clear = function() {
+        this._.svg
+            .transition()
+            .duration(500)
+            .style('opacity', OPACITY.PAUSE);
         this._.g
             .select('g.uv')
             .transition()
@@ -226,6 +236,10 @@ var magicCircle = function(target, position) {
     };
     that.draw = function(today, place) {
         this._.g.select('g.uv').remove();
+        this._.svg
+            .transition()
+            .duration(500)
+            .style('opacity', OPACITY.ON);
 
         var g = this._.g
             .append('g')
