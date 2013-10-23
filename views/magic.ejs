@@ -20,18 +20,18 @@
         var init = function() {
             svg = d3.select('#magic')
                 .append('svg')
-                .attr('width', 1280)
+                .attr('width', 1024)
                 .attr('height', 768)
                 .style('opacity', OPACITY.OFF);
 
             svg.append('g')
                 .attr('class', 'magic left')
-                .attr('transform', 'translate(64,128)');
+                .attr('transform', 'translate(0,128)');
 
             svg.append('path')
                 .attr('d', makeLine([
-                    { x: 640, y: 128 },
-                    { x: 640, y: 768 },
+                    { x: 512, y: 128 },
+                    { x: 512, y: 768 },
                 ]))
                 .style('fill', 'none')
                 .style('stroke', makeRgb(COLOR.NORMAL))
@@ -39,7 +39,7 @@
 
             svg.append('g')
                 .attr('class', 'magic right')
-                .attr('transform', 'translate(704,128)');
+                .attr('transform', 'translate(512,128)');
 
             magic_l = magicCircle('.magic.left', POSITION.LEFT);
             magic_r = magicCircle('.magic.right', POSITION.RIGHT);
@@ -71,11 +71,11 @@
 
             var g_l = svg.append('g')
                 .attr('class', 'label left');
-            draw(g_l, text_l, 592, 128);
+            draw(g_l, text_l, 464, 128);
 
             var g_r = svg.append('g')
                 .attr('class', 'label right');
-            draw(g_r, text_r, 652, 128);
+            draw(g_r, text_r, 524, 128);
         };
         var start = function(today, place_l, place_r) {
             d3.select('#toast')

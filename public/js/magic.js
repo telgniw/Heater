@@ -55,10 +55,10 @@ var magicCircle = function(target, position) {
         y: 0.5 * height,
     };
     var radius = {
-        center: 80,
-        barDate: 150,
-        barTime: 180,
-        barUv: 255,
+        center: 70,
+        barDate: 135,
+        barTime: 165,
+        barUv: 240,
     };
 
     var barDate = [
