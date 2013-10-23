@@ -1,6 +1,5 @@
 div#toast {
-    background-color: rgb(242, 242, 242);
-    background-image: url('/heater/img/toast.png');
+    background-image: url('/heater/img/toast.jpg');
     background-repeat: no-repeat;
     background-position: center center;
 
