@@ -80,13 +80,13 @@
         var start = function(today, place_l, place_r, time_l, time_r) {
             d3.select('#toast')
                 .transition()
-                .duration(500)
+                .duration(2000)
                 .style('opacity', OPACITY.OFF);
 
             svg
                 .transition()
                 .delay(1000)
-                .duration(500)
+                .duration(1000)
                 .style('opacity', OPACITY.ON);
 
             magic_l.draw(today, place_l);
