@@ -23,7 +23,7 @@ From UV to Toast
 ----------------
 
 UV Index    | Heating Time (seconds)
-:---------: | -----------:
+:---------- | -----------:
 0 ~ 2       | 0
 3 ~ 5       | 30
 6 ~ 7       | 60
@@ -31,11 +31,11 @@ UV Index    | Heating Time (seconds)
 11+         | 120
 
 
-Total Heating Time (seconds)    | Burnt
-:-----------------------------: | :---:
+Total Heating Time (seconds)    | Estimated Burnt
+:------------------------------ | :--------------
 0 ~ 250                         | No
-251 ~ 500                       | Slightly
-500+                            | Totally
+251 ~ 500                       | Slight
+500+                            | Significant
 
 
 Library Used
