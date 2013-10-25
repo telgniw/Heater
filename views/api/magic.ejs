@@ -5,16 +5,16 @@
         <title>Heater</title>
 
         <!-- Stylesheets -->
-        <% include layoutStyles %>
-        <link rel="stylesheet" type="text/css" href="/heater/css/magic.css">
+        <% include ../layoutStyles %>
+        <link rel="stylesheet" type="text/css" href="/heater/css/api/magic.css">
     </head>
     <body>
         <div id="toast" class="image"></div>
         <div id="magic" class="chart"></div>
 
         <!-- Scripts: placed at the end of the document so that the pages loads faster. -->
-        <% include layoutScripts %>
-        <script type="text/javascript" src="/heater/js/magic.js"></script>
+        <% include ../layoutScripts %>
+        <script type="text/javascript" src="/heater/js/api/magic.js"></script>
         <script type="text/javascript">
         var svg, magic_l, magic_r;
         var init = function() {

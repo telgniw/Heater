@@ -5,20 +5,25 @@ module.exports = function(app) {
 
     // Index: home page.
     app.get(baseUrl, function(req, res) {
+        res.render('index', {
+        });
+    });
+
+    // Data page.
+    app.get(baseUrl + '/data', function(req, res) {
         uvQuery.getSortedLocationList(function(locations) {
-            res.render('index', {
+            res.render('data', {
                 locations: locations,
             });
         });
     });
 
-    // Visualization: magic circle.
-    var visUrl = baseUrl + '/vis';
-    app.get(visUrl + '/magic', function(req, res) {
-        uvQuery.getSortedLocationList(function(locations) {
-            res.render('vis/magic', {
-                locations: locations,
-            });
+    // Visualization page.
+    app.get(baseUrl + '/vis', function(req, res) {
+        res.render('vis', {
         });
     });
+
+    // API page.
+    // TODO
 };

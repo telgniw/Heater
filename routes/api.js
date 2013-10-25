@@ -5,7 +5,7 @@ module.exports = function(app) {
 
     // API: get magic circle visualization
     app.get(apiUrl + '/draw/magic', function(req, res) {
-        res.render('magic');
+        res.render('api/magic');
     });
 
     // API: get location list
