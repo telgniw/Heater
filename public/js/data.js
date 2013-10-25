@@ -69,7 +69,7 @@ $(function() {
         });
     };
     var onLocationSelected = function() {
-        place = $(this).text();
+        var place = $(this).text();
         $place.text(place);
 
         $.getJSON('api/' + place, function(data) {

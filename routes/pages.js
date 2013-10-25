@@ -18,7 +18,10 @@ module.exports = function(app) {
 
     // Visualization page.
     app.get('/vis', function(req, res) {
-        res.render('vis', {
+        uvQuery.getSortedLocationList(function(locations) {
+            res.render('vis', {
+                locations: locations,
+            });
         });
     });
 

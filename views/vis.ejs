@@ -11,8 +11,41 @@
     <body>
         <% include layoutNavbar %>
 
+        <div class="container">
+            <ul class="nav nav-pills well well-small">
+                <% for(var i = 0; i < 15 && i < locations.length; i++) { %>
+                    <li class="menu-item"><a href="#"><%= locations[i] %></a></li>
+                <% } %>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        Others
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                    <% for(var i = 15; i < locations.length; i++) { %>
+                        <li class="menu-item"><a href="#"><%= locations[i] %></a></li>
+                    <% } %>
+                    </ul>
+                </li>
+            </ul>
+            
+            <header>
+                <h2>Magic Circle for <span class="location">Location</span></h2>
+            </header>
+
+            <div id="date-picker" class="input-append date">
+                <input class="input-small" type="text">
+                <span class="add-on">
+                    <i class="icon-th"></i>
+                </span>
+            </div>
+
+            <div id="magic"></div>
+        </div>
+
         <!-- Scripts: placed at the end of the document so that the pages loads faster. -->
         <% include layoutScripts %>
+        <script type="text/javascript" src="/js/api/magic.js"></script>
         <script type="text/javascript" src="/js/vis.js"></script>
     </body>
 </html>
