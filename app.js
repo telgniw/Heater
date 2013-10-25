@@ -4,12 +4,10 @@ var fs = require('fs');
 // App initialization.
 var app = express();
 
-app.set('base url', '/heater');
-
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-app.use(app.get('base url'), express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public'));
 
 app.use(function(req, res, next) {
     res.charset = 'utf-8';

@@ -5,7 +5,7 @@ div {
     height: 768px;
 }
 div#toast {
-    background-image: url('/heater/img/toast.jpg');
+    background-image: url('/img/toast.jpg');
     background-repeat: no-repeat;
     background-position: center center;
 }

@@ -1,7 +1,7 @@
 var uvQuery = require('../libs/uvQuery');
 
 module.exports = function(app) {
-    var apiUrl = app.get('base url') + '/api';
+    var apiUrl = '/api';
 
     // API: get magic circle visualization
     app.get(apiUrl + '/draw/magic', function(req, res) {
