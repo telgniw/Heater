@@ -19,6 +19,25 @@ API
 Not documented.
 
 
+From UV to Toast
+----------------
+
+UV Index    | Heating Time (seconds)
+:---------: | -----------:
+0 ~ 2       | 0
+3 ~ 5       | 30
+6 ~ 7       | 60
+8 ~ 10      | 90
+11+         | 120
+
+
+Total Heating Time (seconds)    | Burnt
+:-----------------------------: | :---:
+0 ~ 250                         | No
+251 ~ 500                       | Slightly
+500+                            | Totally
+
+
 Library Used
 ------------
 
