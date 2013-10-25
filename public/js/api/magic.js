@@ -354,7 +354,7 @@ var magicCircle = function(target, position) {
 
         now = Date.now();
         this._.animationOffset += now - this._.animationStartTime;
-        this._.animationOffset %= 36000;
+        this._.animationOffset %= 108000;
         this._.animationStartTime = now;
 
         var deg = SPEED.TURN * this._.animationOffset;
