@@ -8,3 +8,15 @@
     font-family: 'Poiret One';
     font-size: 28px;
 }
+
+footer {
+    color: rgb(128, 128, 128);
+    font-size: 12px;
+    text-align: center;
+}
+footer a {
+    color: rgb(230, 159, 163);
+}
+footer a:hover {
+    color: rgb(179, 81, 126);
+}

@@ -1,16 +1,23 @@
-Weather Heater
-==============
+7 Days UV Light Meals
+=====================
 
-Fetch weather information (uv) from [cwb.gov.tw] for heater.
+UV information is fetched from [cwb.gov.tw] for heater.
 
-    # Fetch current weather data into database.
+    # To fetch current weather data into database.
     python scripts/main.py data/uv.sqlite3
 
 [cwb.gov.tw]: http://www.cwb.gov.tw/
 
-See [here](http://yi.csie.org/heater/vis/magic) for the magic circle visualization using [D3].
+See [here](http://uvmeals.csie.org/vis) for the magic circle visualization using [D3].
 
-[![Snapshot](https://raw.github.com/telgniw/Heater/022d2473580a08e2c81619a47413a4cbcb5c1c7a/images/video-snapshot.png)](http://vimeo.com/72251188?autoplay=1)
+[![Snapshot](http://image-link.png)](http://vimeo.com/vimeo-id?autoplay=1)
+
+
+API
+---
+
+Not documented.
+
 
 Library Used
 ------------
@@ -24,9 +31,10 @@ Library Used
 [Flatstrap]: http://flatstrap.org/
 [Bootstrap Datepicker]: http://vitalets.github.io/bootstrap-datepicker/
 
+
 License
 -------
 
-Copyleft (ↄ) 2013 [Yi Huang]
+Copyright (c) 2013 Chao Hao Yang, Daniel Y.C. Kao, Ke-Ting Huang, [Yi Huang]
 
 [Yi Huang]: http://github.com/telgniw
