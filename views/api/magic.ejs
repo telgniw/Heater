@@ -36,7 +36,6 @@
                 .attr('transform', 'translate(0,128)');
 
             svg.append('path')
-                .attr('class', 'bar')
                 .attr('d', makeLine([
                     { x: 512, y: 128 },
                     { x: 512, y: 768 },
@@ -91,11 +90,6 @@
                 .duration(2000)
                 .style('opacity', OPACITY.OFF);
 
-            svg.select('path.bar')
-                .transition()
-                .duration(1000)
-                .style('opacity', OPACITY.ON);
-
             svg
                 .transition()
                 .delay(1000)
@@ -123,11 +117,6 @@
             if((!magic_l.isAnimated()) && (!magic_r.isAnimated())) {
                 magic_l.hide();
                 magic_r.hide();
-
-                svg.select('path.bar')
-                    .transition()
-                    .duration(1000)
-                    .style('opacity', OPACITY.OFF);
 
                 svg
                     .transition()
