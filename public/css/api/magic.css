@@ -4,7 +4,7 @@ div {
     width: 1024px;
     height: 768px;
 }
-div#toast {
+div#standby {
     background-image: url('/img/toast.jpg');
     background-repeat: no-repeat;
     background-position: center center;
@@ -30,6 +30,8 @@ div.toast.right {
 div.dummy {
     display: none;
 }
+div#toast-00 { background-image: url('/img/toasts/00.png'); }
 div#toast-01 { background-image: url('/img/toasts/01.png'); }
 div#toast-02 { background-image: url('/img/toasts/02.png'); }
 div#toast-03 { background-image: url('/img/toasts/03.png'); }
+div#toast-03 { background-image: url('/img/toasts/04.png'); }

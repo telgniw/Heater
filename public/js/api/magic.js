@@ -76,6 +76,20 @@ var magicCircle = function(target, position) {
         { zh: '土', en: 'SAT' },
     ];
 
+    var toastUrl = function(duration) {
+        var base_url = '/img/toasts/';
+        if(duration > 480)
+            return base_url + '04.png';
+        else if(duration > 360) 
+            return base_url + '03.png';
+        else if(duration > 240)
+            return base_url + '02.png';
+        else if(duration > 120)
+            return base_url + '01.png';
+        else
+            return base_url + '00.png';
+    };
+
     var that = {};
     that._ = {
         animationOffset: 0,
@@ -87,17 +101,18 @@ var magicCircle = function(target, position) {
         var svg = d3.select(target)
             .append('g')
             .attr('width', width)
-            .attr('height', height)
-            .append('g');
+            .attr('height', height);
 
-        svg.append('circle')
+        var box = svg.append('g');
+
+        box.append('circle')
             .attr('cx', center.x)
             .attr('cy', center.y)
             .attr('r', radius.center)
             .style('fill', makeRgb(COLOR.DARK))
             .style('stroke', 'none');
 
-        svg.append('circle')
+        box.append('circle')
             .attr('cx', center.x)
             .attr('cy', center.y)
             .attr('r', radius.barTime - 10)
@@ -105,7 +120,7 @@ var magicCircle = function(target, position) {
             .style('stroke', makeRgb(COLOR.LIGHT))
             .style('stroke-width', 25);
 
-        var g = svg.append('g')
+        var g = box.append('g')
             .attr('transform', makeTranslate(center))
             .append('g');
 
@@ -223,32 +238,81 @@ var magicCircle = function(target, position) {
         }
         
         this._.svg = svg;
+        this._.box = box;
         this._.g = g;
     };
     that.clear = function() {
-        this._.svg
+        this._.box
             .transition()
             .duration(500)
             .style('opacity', OPACITY.PAUSE);
+
+        this._.svg
+            .select('g.toast')
+            .transition()
+            .duration(1000)
+            .ease('elastic')
+            .attr('transform', 'translate(56, 56)');
+
         this._.g
             .select('g.uv')
             .transition()
             .duration(1000)
             .style('opacity', 0)
             .remove();
-
-        this.stopAnimation();
     };
-    that.draw = function(today, place) {
-        this._.g.select('g.uv').remove();
-        this._.svg
+    that.hide = function() {
+        this._.box
+            .transition()
+            .duration(500)
+            .style('opacity', OPACITY.OFF);
+    };
+    that.draw = function(today, place, duration) {
+        this._.box
             .transition()
             .duration(500)
             .style('opacity', OPACITY.ON);
 
+        this._.svg
+            .select('g.toast')
+            .remove();
+
         var g = this._.g
             .append('g')
             .attr('class', 'uv');
+
+        if(duration != undefined) {
+            var offset_p = place.length * 28 + 14;
+            var offset = (400 - (offset_p + 144)) / 2;
+
+            var toast = this._.svg
+                .append('g')
+                .attr('class', 'toast')
+                .attr('transform', 'translate(56, 768)');
+
+            toast.append('svg:image')
+                .attr('xlink:href', toastUrl(duration))
+                .attr('width', 400)
+                .attr('height', 400);
+
+            toast.append('text')
+                .attr('x', offset)
+                .attr('y', 450)
+                .style('fill', makeRgb(COLOR.NORMAL))
+                .style('font-family', '"Apple Gothic", "SimHei", monospace')
+                .style('font-size', 28)
+                .style('font-weight', 200)
+                .text(place);
+
+            toast.append('text')
+                .attr('x', offset + offset_p)
+                .attr('y', 450)
+                .style('fill', makeRgb(COLOR.NORMAL))
+                .style('font-family', '"Apple Gothic", "SimHei", monospace')
+                .style('font-size', 24)
+                .style('font-weight', 200)
+                .text('的吐司烤好囉');
+        }
 
         var len = function(p1, p2) {
             return Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
@@ -343,6 +407,7 @@ var magicCircle = function(target, position) {
     };
     that.stopAnimation = function() {
         this._.animationOn = false;
+        this.clear();
     };
 
     that.init(target);

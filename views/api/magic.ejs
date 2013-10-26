@@ -9,68 +9,20 @@
         <link rel="stylesheet" type="text/css" href="/css/api/magic.css">
     </head>
     <body>
-        <div id="toast"></div>
-        <div id="magic">
-            <div class="toast left"></div>
-            <div class="toast right"></div>
-        </div>
+        <div id="standby"></div>
+        <div id="magic"></div><!--style="border: 1px solid pink;"></div-->
 
         <!-- Dummy divs to force loading of toast images. -->
+        <div id="toast-00" class="dummy"></div>
         <div id="toast-01" class="dummy"></div>
         <div id="toast-02" class="dummy"></div>
         <div id="toast-03" class="dummy"></div>
+        <div id="toast-04" class="dummy"></div>
 
         <!-- Scripts: placed at the end of the document so that the pages loads faster. -->
         <% include ../layoutScripts %>
         <script type="text/javascript" src="/js/api/magic.js"></script>
         <script type="text/javascript">
-        var isToastHidden = {
-            left: true,
-            right: true,
-        };
-        var toastTime = {
-            left: 0,
-            right: 0,
-        };
-        var toastUrl = function(duration) {
-            var base_url = '/img/toasts/';
-            if(duration > 500)
-                return base_url + '03.png';
-            else if(duration > 250) 
-                return base_url + '02.png';
-            else
-                return base_url + '01.png';
-        };
-        var hideToast = function() {
-            if(!isToastHidden.left) {
-                isToastHidden.left = true;
-
-                d3.select('.toast.left')
-                    .transition()
-                    .delay(1000)
-                    .duration(1000)
-                    .style('opacity', 0)
-                    .transition()
-                    .duration(0)
-                    .style('opacity', 1)
-                    .style('top', '768px');
-            }
-
-            if(!isToastHidden.right) {
-                isToastHidden.right = true;
-
-                d3.select('.toast.right')
-                    .transition()
-                    .delay(1000)
-                    .duration(1000)
-                    .style('opacity', 0)
-                    .transition()
-                    .duration(0)
-                    .style('opacity', 1)
-                    .style('top', '768px');
-            }
-        };
-
         var svg, magic_l, magic_r;
         var init = function() {
             svg = d3.select('#magic')
@@ -84,6 +36,7 @@
                 .attr('transform', 'translate(0,128)');
 
             svg.append('path')
+                .attr('class', 'bar')
                 .attr('d', makeLine([
                     { x: 512, y: 128 },
                     { x: 512, y: 768 },
@@ -133,15 +86,15 @@
             draw(g_r, text_r, 524, 128);
         };
         var start = function(today, place_l, place_r, time_l, time_r) {
-            toastTime.left = time_l;
-            toastTime.right = time_r;
-
-            hideToast();
-
-            d3.select('#toast')
+            d3.select('#standby')
                 .transition()
                 .duration(2000)
                 .style('opacity', OPACITY.OFF);
+
+            svg.select('path.bar')
+                .transition()
+                .duration(1000)
+                .style('opacity', OPACITY.ON);
 
             svg
                 .transition()
@@ -149,71 +102,52 @@
                 .duration(1000)
                 .style('opacity', OPACITY.ON);
 
-            magic_l.draw(today, place_l);
+            magic_l.draw(today, place_l, time_l);
             magic_l.startAnimation();
 
-            magic_r.draw(today, place_r);
+            magic_r.draw(today, place_r, time_r);
             magic_r.startAnimation();
 
             drawLabel(place_l, place_r);
         };
         var stop = function(position) {
+            clearLabel(position);
+
             if(position == POSITION.LEFT) {
-                isToastHidden.left = false;
-
-                d3.select('.toast.left')
-                    .style('background-image', 'url(' + toastUrl(toastTime.left) + ')')
-                    .transition()
-                    .ease('elastic')
-                    .duration(2000)
-                    .style('top', '128px');
-
                 magic_l.stopAnimation();
-                magic_l.clear();
             }
             else {
-                isToastHidden.right = false;
-
-                d3.select('.toast.right')
-                    .style('background-image', 'url(' + toastUrl(toastTime.right) + ')')
-                    .transition()
-                    .ease('elastic')
-                    .duration(2000)
-                    .style('top', '128px');
-
                 magic_r.stopAnimation();
-                magic_r.clear();
             }
 
-            setTimeout(function() {
-                if((!magic_l.isAnimated()) && (!magic_r.isAnimated())) {
-                    clearLabel(POSITION.LEFT);
-                    clearLabel(POSITION.RIGHT);
+            if((!magic_l.isAnimated()) && (!magic_r.isAnimated())) {
+                magic_l.hide();
+                magic_r.hide();
 
-                    svg
-                        .transition()
-                        .duration(1000)
-                        .style('opacity', OPACITY.OFF);
-                    
-                    hideToast();
+                svg.select('path.bar')
+                    .transition()
+                    .duration(1000)
+                    .style('opacity', OPACITY.OFF);
 
-                    d3.select('#toast')
-                        .transition()
-                        .delay(3000)
-                        .duration(1000)
-                        .style('opacity', OPACITY.ON);
-                }
-            }, 10000);
+                svg
+                    .transition()
+                    .delay(15000)
+                    .duration(1000)
+                    .style('opacity', OPACITY.OFF);
+
+                d3.select('#standby')
+                    .transition()
+                    .delay(16000)
+                    .duration(1000)
+                    .style('opacity', OPACITY.ON);
+            }
         };
         $(function() {
             init();
             /*
-            setTimeout(function(){ start('2013-10-11', '臺北', '高雄', 180, 300); }, 3000);
-            setTimeout(function(){ stop(POSITION.LEFT); }, 8000);
-            setTimeout(function(){ stop(POSITION.RIGHT); }, 15000);
-            setTimeout(function(){ start('2013-10-11', '塔塔加', '玉山', 540, 400); }, 30000);
-            setTimeout(function(){ stop(POSITION.RIGHT); }, 38000);
-            setTimeout(function(){ stop(POSITION.LEFT); }, 45000);
+            setTimeout(function(){ start('2013-10-11', '塔塔加', '屏東', 540, 270); }, 3000);
+            setTimeout(function(){ stop(POSITION.RIGHT); }, 12000);
+            setTimeout(function(){ stop(POSITION.LEFT); }, 18000);
             */
         });
         </script>
