@@ -26,5 +26,8 @@ module.exports = function(app) {
     });
 
     // API page.
-    // TODO
+    app.get('/api_doc', function(req, res) {
+        res.render('api_doc', {
+        });
+    });
 };
