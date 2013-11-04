@@ -1,0 +1,51 @@
+<style>
+#forkongithub a{
+    background:#CE8894;
+    color:#fff;
+    text-decoration:none;
+    font-family:arial, sans-serif;
+    text-align:center;
+    font-weight:bold;
+    padding:5px 40px;
+    font-size:1rem;
+    line-height:1.5rem;
+    position:relative;
+    transition:0.5s;
+}
+#forkongithub a:hover{
+    background:#FF9F9F;
+    color:#fff;
+}
+#forkongithub a::before,#forkongithub a::after{
+    content:"";
+    width:100%;
+    display:block;
+    position:absolute;
+    top:1px;
+    left:0;
+    height:1px;
+    background:;
+    }#forkongithub a::after{bottom:1px;
+    top:auto;
+}
+#forkongithub{
+    position:absolute;
+    display:block;
+    top:0;
+    right:0;
+    width:180px;
+    overflow:hidden;
+    height:180px;
+    z-index: 1000;
+}
+#forkongithub a{
+    width:180px;
+    position:absolute;
+    top:60px;
+    right:-60px;
+    transform:rotate(45deg);
+    -webkit-transform:rotate(45deg);
+    box-shadow:1px 1px 10px rgba(155,85,110,0.5);
+}
+</style>
+<span id="forkongithub"><a href="https://github.com/telgniw/uvmeals">View on GitHub</a></span>
