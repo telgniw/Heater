@@ -297,7 +297,7 @@ var magicCircle = function(target, position) {
 
             toast.append('text')
                 .attr('x', offset)
-                .attr('y', 450)
+                .attr('y', -24)
                 .style('fill', makeRgb(COLOR.NORMAL))
                 .style('font-family', '"Apple Gothic", "SimHei", monospace')
                 .style('font-size', 28)
@@ -306,7 +306,7 @@ var magicCircle = function(target, position) {
 
             toast.append('text')
                 .attr('x', offset + offset_p)
-                .attr('y', 450)
+                .attr('y', -24)
                 .style('fill', makeRgb(COLOR.NORMAL))
                 .style('font-family', '"Apple Gothic", "SimHei", monospace')
                 .style('font-size', 24)
