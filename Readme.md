@@ -31,8 +31,9 @@ duration    | 0 (optional)
     stop(position);
 
 field       | format
------------ | ---------------------------------
-position    | POSITION.LEFT or POSITION.RIGHT
+----------- | -----------------
+position    | POSITION.LEFT
+            | POSITION.RIGHT
 
 
 Data API
