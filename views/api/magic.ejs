@@ -5,12 +5,19 @@
         <title>Heater</title>
 
         <!-- Stylesheets -->
-        <% include ../layoutStyles %>
         <link rel="stylesheet" type="text/css" href="/css/api/magic.css">
+
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Google Analytics -->
+        <% include ../ga.ejs %>
     </head>
     <body>
         <div id="standby"></div>
-        <div id="magic"></div><!--style="border: 1px solid pink;"></div-->
+        <div id="magic"></div>
 
         <!-- Dummy divs to force loading of toast images. -->
         <div id="toast-00" class="dummy"></div>
@@ -20,8 +27,11 @@
         <div id="toast-04" class="dummy"></div>
 
         <!-- Scripts: placed at the end of the document so that the pages loads faster. -->
-        <% include ../layoutScripts %>
+        <script type="text/javascript" src="/js/jquery.js"></script>
+        <script type="text/javascript" src="/js/d3.v3.min.js"></script>
+        <script type="text/javascript" src="/js/api.js"></script>
         <script type="text/javascript" src="/js/api/magic.js"></script>
+
         <script type="text/javascript">
         var svg, magic_l, magic_r;
         var init = function() {
@@ -133,11 +143,6 @@
         };
         $(function() {
             init();
-            /*
-            setTimeout(function(){ start('2013-10-11', '塔塔加', '屏東', 540, 270); }, 3000);
-            setTimeout(function(){ stop(POSITION.RIGHT); }, 12000);
-            setTimeout(function(){ stop(POSITION.LEFT); }, 18000);
-            */
         });
         </script>
     </body>
