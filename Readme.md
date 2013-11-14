@@ -8,15 +8,43 @@ UV information is fetched from [cwb.gov.tw] for heater.
 
 [cwb.gov.tw]: http://www.cwb.gov.tw/
 
-See [here](http://uvmeals.csie.org/vis) for the magic circle visualization using [D3].
 
-[![Snapshot](http://image-link.png)](http://vimeo.com/vimeo-id?autoplay=1)
+Visualization API
+-----------------
+
+Generating magic circle.
+
+    GET /api/draw/magic
+
+JavaScript call to the page.
+
+    // start magic circle
+    start(date, place_l, place_r, duration_l, duration_r);
+
+field       | format
+----------- | -------------
+date        | 'yyyy-MM-dd'
+place       | '地點'
+duration    | 0 (optional)
+
+    // stop magic circle
+    stop(position);
+
+field       | format
+----------- | ---------------------------------
+position    | POSITION.LEFT or POSITION.RIGHT
 
 
-API
----
+Data API
+--------
 
-Not documented.
+Get location list.
+
+    GET /api
+
+Get uv list for a specific location and time.
+
+    GET /api/地點/yyyy-MM-dd
 
 
 From UV to Toast
