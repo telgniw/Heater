@@ -94,7 +94,14 @@
                 .attr('class', 'label right');
             draw(g_r, text_r, 524, 128);
         };
+        var getLabel = function(position) {
+            var clz = (position == POSITION.LEFT)? 'left' : 'right';
+            return svg.select('.label.' + clz).text();
+        };
         var start = function(today, place_l, place_r, time_l, time_r) {
+            ga('send', 'event', 'MC-Start', place_l, today);
+            ga('send', 'event', 'MC-Start', place_r, today);
+
             d3.select('#standby')
                 .transition()
                 .duration(2000)
@@ -115,6 +122,8 @@
             drawLabel(place_l, place_r);
         };
         var stop = function(position) {
+            ga('send', 'event', 'MC-Stop', getLabel(position));
+
             clearLabel(position);
 
             if(position == POSITION.LEFT) {
