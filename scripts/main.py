@@ -12,17 +12,17 @@ def fetch_uv_result():
     f = urlopen(uv_url)
     soup = Soup(f.read(), 'xml')
 
-    for data in soup.UvData.find_all('Data'):
+    for data in soup.UV.find_all('Data'):
         try:
             name = data.SiteName.get_text()
             time = datetime.strptime(
-                data.DataCreationDate.get_text(),
+                data.PublishTime.get_text(),
                 '%Y-%m-%d %H:%M'
             )
 
             result[name] = {
                 'time': time,
-                'uv':   int(data.Uvi.get_text()),
+                'uv':   int(data.UVI.get_text()),
             }
         except:
             pass
