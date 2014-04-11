@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup as Soup
 from urllib2 import urlopen
 from datetime import datetime
 
-uv_url  = 'http://cdx.epa.gov.tw/CDX/OpenData/UV.xml'
+uv_url  = 'http://opendata.epa.gov.tw/ws/Data/UV/?format=xml'
 
 def fetch_uv_result():
     result = {}
